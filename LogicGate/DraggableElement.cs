@@ -39,14 +39,14 @@ namespace LogicGate
             window.CanvasMain.CaptureMouse();
         }
 
-        private void OnMoveAround(object _sender, MouseEventArgs _e)
+        private void OnMoveAround(Point _position)
         {
-            Point _pos = _e.GetPosition(_sender as IInputElement);
+            Point _pos = _position;
             Canvas.SetTop(ellipse, _pos.Y - window.currentObjectOffset.Y);
             Canvas.SetLeft(ellipse, _pos.X - window.currentObjectOffset.X);
         }
 
-        private void OnUnselect(object _sender, MouseButtonEventArgs _e)
+        private void OnUnselect()
         {
             window.CanvasMain.ReleaseMouseCapture();
             window.OnMouseMoveEvent -= OnMoveAround;

@@ -21,8 +21,8 @@ namespace LogicGate
     /// </summary>
     public partial class MainWindow : Window
     {
-        public Action<object, MouseEventArgs> OnMouseMoveEvent;
-        public Action<object, MouseButtonEventArgs> OnMouseUpEvent;
+        public Action<Point> OnMouseMoveEvent;
+        public Action OnMouseUpEvent;
         public Point currentObjectOffset = new(0,0);
         public MainWindow()
         {
@@ -32,12 +32,21 @@ namespace LogicGate
 
         private void CanvasOnMouseMove(object sender, MouseEventArgs e)
         {
-            OnMouseMoveEvent?.Invoke(sender, e);
+            Point _position = e.GetPosition(CanvasMain);
+            if (_position.X < 0)
+                _position.X = 0;
+            else if (_position.X > CanvasMain.ActualWidth)
+                _position.X = CanvasMain.ActualWidth;
+            if (_position.Y < 0)
+                _position.Y = 0;
+            else if (_position.Y > CanvasMain.ActualHeight)
+                _position.Y = CanvasMain.ActualHeight;
+            OnMouseMoveEvent?.Invoke(_position);
         }
 
         private void CanvasOnMouseUp(object sender, MouseButtonEventArgs e)
         {
-            OnMouseUpEvent?.Invoke(sender, e);
+            OnMouseUpEvent?.Invoke();
         }
     }
 }
