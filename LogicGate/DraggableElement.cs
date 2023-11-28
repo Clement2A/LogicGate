@@ -22,8 +22,8 @@ namespace LogicGate
             ellipse.Fill = Brushes.Red;
             ellipse.Height = 100;
             ellipse.Width = 100;
-            this.window = _window;
-            ellipse.PreviewMouseDown += OnElementSelected;
+            window = _window;
+            ellipse.PreviewMouseLeftButtonDown += OnElementSelected;
             _window.CanvasMain.Children.Add(ellipse);
             Canvas.SetTop(ellipse, 0);
             Canvas.SetLeft(ellipse, 0);

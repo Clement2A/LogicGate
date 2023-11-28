@@ -23,6 +23,10 @@ namespace LogicGate
     {
         public Action<Point> OnMouseMoveEvent;
         public Action OnMouseUpEvent;
+        public Action OnMouseRightClickDown;
+        public Action OnMouseRightClickDrag;
+        public Action OnMouseRightClickStopDrag;
+        public Action OnMouseRightClickUp;
         public Point currentObjectOffset = new(0,0);
         public MainWindow()
         {
@@ -47,6 +51,11 @@ namespace LogicGate
         private void CanvasOnMouseUp(object sender, MouseButtonEventArgs e)
         {
             OnMouseUpEvent?.Invoke();
+        }
+
+        private void CanvasRightClick(object sender, MouseButtonEventArgs e)
+        {
+
         }
     }
 }
