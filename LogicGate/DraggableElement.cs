@@ -24,19 +24,19 @@ namespace LogicGate
             ellipse.Width = 100;
             window = _window;
             ellipse.PreviewMouseLeftButtonDown += OnElementSelected;
-            _window.CanvasMain.Children.Add(ellipse);
+            //_window.CanvasMain.Children.Add(ellipse);
             Canvas.SetTop(ellipse, 0);
             Canvas.SetLeft(ellipse, 0);
         }
 
         private void OnElementSelected(object _sender, MouseButtonEventArgs _e)
         {
-            window.currentObjectOffset = _e.GetPosition(window.CanvasMain);
+            //window.currentObjectOffset = _e.GetPosition(window.CanvasMain);
             window.currentObjectOffset.Y -= Canvas.GetTop(ellipse);
             window.currentObjectOffset.X -= Canvas.GetLeft(ellipse);
             window.OnMouseMoveEvent += OnMoveAround;
             window.OnMouseUpEvent += OnUnselect;
-            window.CanvasMain.CaptureMouse();
+            //window.CanvasMain.CaptureMouse();
         }
 
         private void OnMoveAround(Point _position)
@@ -48,7 +48,7 @@ namespace LogicGate
 
         private void OnUnselect()
         {
-            window.CanvasMain.ReleaseMouseCapture();
+            //window.CanvasMain.ReleaseMouseCapture();
             window.OnMouseMoveEvent -= OnMoveAround;
             window.OnMouseUpEvent -= OnUnselect;
         }
