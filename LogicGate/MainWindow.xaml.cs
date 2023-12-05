@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
@@ -28,17 +29,18 @@ namespace LogicGate
         public Action? OnMouseRightClickStopDrag;
         public Action? OnMouseRightClickUp;
         public Point currentObjectOffset = new(0,0);
+
+        Grid sGrid;
+        Grid mGrid;
+
         public MainWindow()
         {
             InitializeComponent();
             DesignGrid _designGrid = new DesignGrid();
-            Grid _grid = _designGrid.StaticGrid;
-            mainGrid.Children.Add(_grid);
-            _grid.Margin = new Thickness(0);
-
-            //DraggableElement _de = new(this);
-            //Path _path = new Path();
-            //_path.Data = Geometry.Parse("");
+            mainGrid.MouseUp += CanvasOnMouseUp;
+            //moveGrid.Width = 1500;
+            //moveGrid.Height = 1500;
+            mainGrid.Children.Add(_designGrid.StaticGrid);
         }
 
         private void CanvasOnMouseMove(object sender, MouseEventArgs e)

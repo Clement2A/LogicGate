@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LogicGate"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="438" Width="799">
 
     <Window.Resources>
         <Style TargetType="Path">
@@ -21,19 +21,10 @@
         </Style>
     </Window.Resources>
 
-    <Grid x:Name="mainGrid" ClipToBounds="True" Background="Black">
-        <Grid Background="#FF232323" HorizontalAlignment="Center" VerticalAlignment="Center" Height="241" Width="406" Margin="0,0,50,50" RenderTransformOrigin="0.5,0.5">
-            <Grid.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform ScaleX="1" ScaleY="1"/>
-                    <SkewTransform/>
-                    <RotateTransform/>
-                    <TranslateTransform/>
-                </TransformGroup>
-            </Grid.RenderTransform>
-            <Rectangle HorizontalAlignment="Center" Height="100" Margin="0,0
-                       ,0,0" Stroke="Black" VerticalAlignment="Center" Width="100" Fill="#FFB76565"/>
-        </Grid>
+    <Grid x:Name="mainGrid" Background="Black">
+        <Canvas x:Name="staticGrid">
+            <Grid x:Name="moveGrid" Height="500" Width="500"/>
+        </Canvas>
     </Grid>
 
     <!--<Grid ClipToBounds="True">
