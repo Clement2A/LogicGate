@@ -21,11 +21,13 @@
         </Style>
     </Window.Resources>
 
-    <Grid x:Name="mainGrid" Background="Black">
-        <Canvas x:Name="staticGrid">
-            <Grid x:Name="moveGrid" Height="500" Width="500"/>
+    <Canvas x:Name="mainGrid" Background="Black">
+        <Canvas x:Name="staticGrid" Background="#FF1A2E40">
+            <Grid x:Name="moveGrid" Background="#FF303A44" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Ellipse Fill="#FF7B3D3D" Margin="371,184,50,50" Height="100" Width="100" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            </Grid>
         </Canvas>
-    </Grid>
+    </Canvas>
 
     <!--<Grid ClipToBounds="True">
         <Canvas x:Name="CanvasMain" Background="#FF373737" PreviewMouseMove="CanvasOnMouseMove" PreviewMouseUp="CanvasOnMouseUp" MouseRightButtonDown="CanvasRightClick" Margin="0,0,-652,-903">

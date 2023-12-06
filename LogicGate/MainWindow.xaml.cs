@@ -40,7 +40,7 @@ namespace LogicGate
             mainGrid.MouseUp += CanvasOnMouseUp;
             //moveGrid.Width = 1500;
             //moveGrid.Height = 1500;
-            mainGrid.Children.Add(_designGrid.StaticGrid);
+            //mainGrid.Children.Add(_designGrid.StaticGrid);
         }
 
         private void CanvasOnMouseMove(object sender, MouseEventArgs e)

@@ -44,6 +44,7 @@ namespace LogicGate
             ellipse.Height = 150;
             ellipse.Width = 150;
             moveGrid.Children.Add(ellipse);
+            ellipse.Margin = new(50, 0, -50, 0);
 
         }
 
