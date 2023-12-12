@@ -37,7 +37,10 @@ namespace LogicGate
         {
             InitializeComponent();
             DesignGrid _designGrid = new DesignGrid();
+            mainGrid.Children.Add(_designGrid.staticCanvas);
             mainGrid.MouseUp += CanvasOnMouseUp;
+            DraggableElement _de = new(_designGrid);
+            DraggableElement _dee = new(_designGrid);
             //moveGrid.Width = 1500;
             //moveGrid.Height = 1500;
             //mainGrid.Children.Add(_designGrid.StaticGrid);

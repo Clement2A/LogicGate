@@ -15,7 +15,7 @@ namespace LogicGate
 {
     internal class DesignGrid
     {
-        Canvas staticCanvas = new();
+        public readonly Canvas staticCanvas = new();
         Grid moveGrid = new();
         Border outerBorder = new();
         Border innerBorder = new();
@@ -32,6 +32,7 @@ namespace LogicGate
         public event Action<Point> OnMouseMove = delegate { };
 
         Thickness mouseOffset = new();
+        public Point MouseOffsetPoint => new Point(mouseOffset.Left, mouseOffset.Top);
 
         public Canvas StaticGrid => staticCanvas;
 
@@ -39,13 +40,18 @@ namespace LogicGate
         {
             InitGrids();
             InitEvents();
-            Ellipse ellipse = new Ellipse();
-            ellipse.Fill = Brushes.Red;
-            ellipse.Height = 150;
-            ellipse.Width = 150;
-            moveGrid.Children.Add(ellipse);
-            ellipse.Margin = new(50, 0, -50, 0);
+            //Ellipse ellipse = new Ellipse();
+            //ellipse.Fill = Brushes.Orange;
+            //ellipse.Height = 150;
+            //ellipse.Width = 150;
+            //moveGrid.Children.Add(ellipse);
+            //ellipse.Margin = new(50, 0, -50, 0);
 
+        }
+
+        public void AddElement(DraggableElement _element)
+        {
+            moveGrid.Children.Add(_element.ellipse);
         }
 
         void InitGrids()
@@ -54,13 +60,15 @@ namespace LogicGate
             staticCanvas.Children.Add(outerBorder);
             outerBorder.Child = innerBorder;
             innerBorder.Child = moveGrid;
-            staticCanvas.Background = Brushes.Black;
+            staticCanvas.Background = Brushes.DarkBlue;
             innerBorder.Margin = new(padding);
             moveGrid.Margin = new(margin);
             moveGrid.Width = double.NaN;
             moveGrid.Height = double.NaN;
             moveGrid.MinWidth = 100;
             moveGrid.MinHeight = 100;
+            moveGrid.HorizontalAlignment = HorizontalAlignment.Left;
+            moveGrid.VerticalAlignment = VerticalAlignment.Top;
         }
 
         void InitEvents()
@@ -68,6 +76,7 @@ namespace LogicGate
             staticCanvas.MouseRightButtonDown += (sender, args) => { OnRightClickDown.Invoke(); };
             staticCanvas.MouseRightButtonUp += (sender, args) => { OnRightClickUp.Invoke(args.GetPosition(staticCanvas)); };
             staticCanvas.MouseLeftButtonDown += (sender, args) => { OnLeftClickDown.Invoke(); };
+            staticCanvas.MouseLeftButtonUp += (sender, args) => { OnLeftClickUp.Invoke(args.GetPosition(staticCanvas)); };
             staticCanvas.MouseMove += (sender, args) => { OnMouseMove.Invoke(args.GetPosition(staticCanvas)); };
             staticCanvas.MouseLeave += (sender, args) => { ResetEvents(); };
             OnRightClickDown += RightDragOrClick;
