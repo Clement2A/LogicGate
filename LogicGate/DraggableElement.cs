@@ -41,6 +41,8 @@ namespace LogicGate
             //window.currentObjectOffset = _e.GetPosition(window.CanvasMain);
             //window.currentObjectOffset.Y -= Canvas.GetTop(ellipse);
             //window.currentObjectOffset.X -= Canvas.GetLeft(ellipse);
+            Point _gridPos = grid.MousePosToGridPos(_e.GetPosition(grid.StaticGrid));
+            grid.SelectionOffset = new Point(ellipse.Margin.Left - _gridPos.X, ellipse.Margin.Top - _gridPos.Y);
             grid.OnMouseMove += OnMoveAround;
             grid.OnLeftClickUp += OnUnselect;
             Debug.WriteLine("selected");
@@ -49,9 +51,19 @@ namespace LogicGate
 
         private void OnMoveAround(Point _position)
         {
-            ellipse.Margin = new(_position.X, _position.Y, 0 ,0);
+            Point _gridPos = grid.MousePosToGridPos(_position);
+            _gridPos.X += grid.SelectionOffset.X;
+            _gridPos.Y += grid.SelectionOffset.Y;
+            if(_gridPos.X < 0)
+                _gridPos.X = 0;
+            if(_gridPos.Y < 0)
+                _gridPos.Y = 0;
+
+            ellipse.Margin = new(_gridPos.X, _gridPos.Y, 0 ,0);
             Debug.WriteLine("Move element");
             Debug.WriteLine("Position is " + _position.X + " - " + _position.Y);
+            Debug.WriteLine("Offset is " + grid.SelectionOffset.X + " - " + grid.SelectionOffset.Y);
+            Debug.WriteLine("Grid is " + _gridPos.X + " - " + _gridPos.Y);
         }
 
         private void OnUnselect(Point _position)

@@ -44,6 +44,8 @@ namespace LogicGate
             //moveGrid.Width = 1500;
             //moveGrid.Height = 1500;
             //mainGrid.Children.Add(_designGrid.StaticGrid);
+            Debug.WriteLine("MainWindow is " + mainGrid.ActualWidth + " - " + mainGrid.ActualHeight);
+
         }
 
         private void CanvasOnMouseMove(object sender, MouseEventArgs e)

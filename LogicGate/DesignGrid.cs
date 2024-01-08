@@ -21,7 +21,9 @@ namespace LogicGate
         Border innerBorder = new();
 
         int padding = 50;
-        int margin = 20;
+        int margin = 30;
+
+        Point selectionOffset = new Point(0, 0);
 
         public event Action<Point> OnCanvasMove = delegate { };
         public event Action<Point> OnDrag = delegate { };
@@ -35,6 +37,7 @@ namespace LogicGate
         public Point MouseOffsetPoint => new Point(mouseOffset.Left, mouseOffset.Top);
 
         public Canvas StaticGrid => staticCanvas;
+        public Point SelectionOffset { get => selectionOffset; set => selectionOffset = value; }
 
         public DesignGrid()
         {
@@ -57,6 +60,7 @@ namespace LogicGate
         void InitGrids()
         {
             innerBorder.Background = Brushes.Gray;
+            outerBorder.Background = Brushes.DarkOliveGreen;
             staticCanvas.Children.Add(outerBorder);
             outerBorder.Child = innerBorder;
             innerBorder.Child = moveGrid;
@@ -80,7 +84,15 @@ namespace LogicGate
             staticCanvas.MouseMove += (sender, args) => { OnMouseMove.Invoke(args.GetPosition(staticCanvas)); };
             staticCanvas.MouseLeave += (sender, args) => { ResetEvents(); };
             OnRightClickDown += RightDragOrClick;
-            staticCanvas.SizeChanged += (sender, args) => { MoveCanvas(new(0, 0)); };
+            staticCanvas.SizeChanged += (sender, args) => {  };
+        }
+
+        public Point MousePosToGridPos(Point _mousePos)
+        {
+            Point _gridPos = new(_mousePos.X - outerBorder.Margin.Left - innerBorder.Margin.Left - moveGrid.Margin.Left, _mousePos.Y - outerBorder.Margin.Top - innerBorder.Margin.Top - moveGrid.Margin.Top);
+            Debug.WriteLine("Mouse is at " + _mousePos.X + " - " + _mousePos.Y);
+            Debug.WriteLine("Mouse on grid is at " + _gridPos.X + " - " + _gridPos.Y);
+            return _gridPos;
         }
 
         void RightDragOrClick()
@@ -124,55 +136,65 @@ namespace LogicGate
 
         void MoveCanvas(Point _mousePos)
         {
-            Size _staticGridSize = staticCanvas.RenderSize;
-            Size _outerBorderSize = outerBorder.DesiredSize;
+            double _leftOffset = 0, _topOffset = 0;
 
-            double _leftOffset = _mousePos.X - mouseOffset.Left;
-            double _topOffset = _mousePos.Y - mouseOffset.Top;
-            if (_staticGridSize.Width < outerBorder.DesiredSize.Width)
+            if (outerBorder.ActualWidth < staticCanvas.ActualWidth)
             {
-                if (_leftOffset > 0)
-                {
-                    mouseOffset.Left += _leftOffset;
-                    mouseOffset.Right -= _leftOffset;
-                    _leftOffset = 0;
-                }
-                else if (_leftOffset < _staticGridSize.Width - _outerBorderSize.Width)
-                {
-                    double _diff = (_staticGridSize.Width - _outerBorderSize.Width) - _leftOffset;
-                    mouseOffset.Left -= _diff;
-                    mouseOffset.Right += _diff;
-                    _leftOffset = _staticGridSize.Width - _outerBorderSize.Width;
-                }
+                //_leftOffset = (staticCanvas.ActualWidth - outerBorder.ActualWidth) / 2;
+                _leftOffset = 0;
+
             }
             else
             {
-                _leftOffset = ((_staticGridSize.Width - _outerBorderSize.Width)) / 2;
+                _leftOffset = _mousePos.X - mouseOffset.Left;
+                if (staticCanvas.ActualWidth < outerBorder.ActualWidth)
+                {
+                    if (_leftOffset > 0)
+                    {
+                        mouseOffset.Left += _leftOffset;
+                        mouseOffset.Right -= _leftOffset;
+                        _leftOffset = 0;
+                    }
+                    else if (_leftOffset < staticCanvas.ActualWidth - outerBorder.ActualWidth)
+                    {
+                        double _diff = (staticCanvas.ActualWidth - outerBorder.ActualWidth) - _leftOffset;
+                        mouseOffset.Left -= _diff;
+                        mouseOffset.Right += _diff;
+                        _leftOffset = staticCanvas.ActualWidth - outerBorder.ActualWidth;
+                    }
+                }
             }
-            if (_staticGridSize.Height < outerBorder.DesiredSize.Height)
+
+            if(outerBorder.ActualHeight < staticCanvas.ActualHeight)
             {
-                if (_topOffset > 0)
-                {
-                    mouseOffset.Top += _topOffset;
-                    mouseOffset.Bottom -= _topOffset;
-                    _topOffset = 0;
-                }
-                else if (_topOffset < _staticGridSize.Height - _outerBorderSize.Height)
-                {
-                    double _diff = _staticGridSize.Height - _outerBorderSize.Height - _topOffset;
-                    mouseOffset.Top -= _diff;
-                    mouseOffset.Bottom += _diff;
-                    _topOffset = _staticGridSize.Height - _outerBorderSize.Height;
-                }
+                //_topOffset = (staticCanvas.ActualHeight - outerBorder.ActualHeight) / 2;
+                _topOffset = 0;
             }
             else
             {
-                _topOffset = ((_staticGridSize.Height - _outerBorderSize.Height)) / 2;
+                _topOffset = _mousePos.Y - mouseOffset.Top;
+                if (staticCanvas.ActualHeight < outerBorder.ActualHeight)
+                {
+                    if (_topOffset > 0)
+                    {
+                        mouseOffset.Top += _topOffset;
+                        mouseOffset.Bottom -= _topOffset;
+                        _topOffset = 0;
+                    }
+                    else if (_topOffset < staticCanvas.ActualHeight - outerBorder.ActualHeight)
+                    {
+                        double _diff = staticCanvas.ActualHeight - outerBorder.ActualHeight - _topOffset;
+                        mouseOffset.Top -= _diff;
+                        mouseOffset.Bottom += _diff;
+                        _topOffset = staticCanvas.ActualHeight - outerBorder.ActualHeight;
+                    }
+                }
             }
+
             outerBorder.Margin = new Thickness(_leftOffset, _topOffset, -_leftOffset, -_topOffset);
-            Debug.WriteLine("Margins are " + outerBorder.Margin);
-            Debug.WriteLine("Size is " + _staticGridSize);
-            Debug.WriteLine("Move size is " + _outerBorderSize);
+
+            Debug.WriteLine("Move size is " + outerBorder.ActualWidth + " - " + outerBorder.ActualHeight);
+            Debug.WriteLine("Grid size is " + staticCanvas.ActualWidth + " - " + staticCanvas.ActualHeight);
         }
 
         void MouseLock(Point _mousePos)
