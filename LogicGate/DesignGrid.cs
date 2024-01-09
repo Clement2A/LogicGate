@@ -20,6 +20,7 @@ namespace LogicGate
         Border outerBorder = new();
         Border innerBorder = new();
 
+
         int padding = 50;
         int margin = 30;
 
@@ -54,7 +55,12 @@ namespace LogicGate
 
         public void AddElement(DraggableElement _element)
         {
-            moveGrid.Children.Add(_element.ellipse);
+            moveGrid.Children.Add(_element.ElementGrid);
+        }
+
+        public void AddElement(UIElement _element)
+        {
+            moveGrid.Children.Add(_element);
         }
 
         void InitGrids()

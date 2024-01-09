@@ -21,12 +21,14 @@
         </Style>
     </Window.Resources>
 
-    <Grid x:Name="mainGrid" Background="Black" Margin="0,0,0,0">
+    <Grid x:Name="mainGrid" Margin="0,0,0,0" Background="Black">
+        <Ellipse HorizontalAlignment="Left" Height="50" Margin="289,276,0,0" Stroke="Black" VerticalAlignment="Top" Width="50" Fill="#FFBD7A29"/>
         <!--<Canvas x:Name="staticGrid" Background="#FF1A2E40">
             <Grid x:Name="moveGrid" Background="#FF303A44" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Ellipse Fill="#FF7B3D3D" Margin="371,184,50,50" Height="100" Width="100" HorizontalAlignment="Left" VerticalAlignment="Top"/>
             </Grid>
         </Canvas>-->
+        <Line Stroke="White" Margin="127,73,350,83" X2="50" Y2="50" StrokeThickness="3" Cursor="Hand"/>
     </Grid>
 
     <!--<Grid ClipToBounds="True">
