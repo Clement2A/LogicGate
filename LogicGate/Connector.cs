@@ -13,37 +13,44 @@ using System.Windows.Shapes;
 
 namespace LogicGate
 {
-    internal class Connector : DraggableElement
+    internal class Connector : DesignElement
     {
         Ellipse connectorShape;
+        List<Connector> connectors = new();
 
+        public List<Connector> Connectors => connectors;
+
+        public bool InCircuit { get; set; } = false;
 
         public Connector(DesignGrid _grid) : base(_grid)
         {
-            Debug.WriteLine("Connector construct");
             Ellipse _moveHandle = new Ellipse
             {
-                Fill = ColorLibrary.ConnectorColor,
-                Height = 20,
-                Width = 20,
-                Margin = new(0, 0, 0, 0),
+                Fill = DefaultValuesLibrary.ConnectorHandleColor,
+                Height = DefaultValuesLibrary.ConnectorHandleSize,
+                Width = DefaultValuesLibrary.ConnectorHandleSize,
+                Margin = DefaultValuesLibrary.ConnectorHandleOffset,
                 VerticalAlignment = VerticalAlignment.Top,
                 HorizontalAlignment = HorizontalAlignment.Left,
+                Cursor = Cursors.SizeAll,
             };
-            SetDragElement(_moveHandle);
+            MakeElementDraggable(_moveHandle);
+            MakeElementHoverable(_moveHandle);
+            AddElement(_moveHandle);
             connectorShape = new Ellipse
             {
-                Fill = ColorLibrary.InactiveConnectorColor,
-                Height = 10,
-                Width = 10,
-                Margin = new(5, 5, 0, 0),
+                Fill = DefaultValuesLibrary.ConnectorInactiveColor,
+                Height = DefaultValuesLibrary.ConnectorShapeSize,
+                Width = DefaultValuesLibrary.ConnectorShapeSize,
+                Margin = DefaultValuesLibrary.ConnectorShapeOffset,
                 VerticalAlignment = VerticalAlignment.Top,
                 HorizontalAlignment = HorizontalAlignment.Left,
+                Cursor = Cursors.Hand,
             };
             Panel.SetZIndex(ElementGrid, 1);
             connectorShape.PreviewMouseLeftButtonDown += OnConnectorClick;
+            MakeElementHoverable(connectorShape);
             AddElement(connectorShape);
-            CanBeDragged = false;
         }
 
         void OnConnectorClick(object _sender, MouseButtonEventArgs _e)
@@ -55,7 +62,22 @@ namespace LogicGate
         {
             grid.OnMouseMove -= OnCreateWire;
             Debug.WriteLine("Create a wire and move it around");
-            Wire _wire = new Wire(this);
+            Wire _wire = new Wire(grid, this);
+        }
+
+        public void AddConnector(Connector _connector)
+        {
+            connectors.Add(_connector);
+        }
+
+        public void RemoveConnector(Connector _connector)
+        {
+            connectors.Remove(_connector);
+        }
+
+        public void ResetInCircuit()
+        {
+            InCircuit = false;
         }
     }
 }

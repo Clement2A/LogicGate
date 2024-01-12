@@ -20,11 +20,13 @@ namespace LogicGate
         Border outerBorder = new();
         Border innerBorder = new();
 
+        DesignElement? hoveredElement = null;
 
         int padding = 50;
         int margin = 30;
 
         Point selectionOffset = new Point(0, 0);
+        public DesignElement? HoveredElement => hoveredElement;
 
         public event Action<Point> OnCanvasMove = delegate { };
         public event Action<Point> OnDrag = delegate { };
@@ -33,6 +35,8 @@ namespace LogicGate
         public event Action OnLeftClickDown = delegate { };
         public event Action OnRightClickDown = delegate { };
         public event Action<Point> OnMouseMove = delegate { };
+
+        public event Action<DesignElement?> OnElementHovered = delegate { };
 
         Thickness mouseOffset = new();
         public Point MouseOffsetPoint => new Point(mouseOffset.Left, mouseOffset.Top);
@@ -53,7 +57,7 @@ namespace LogicGate
 
         }
 
-        public void AddElement(DraggableElement _element)
+        public void AddElement(DesignElement _element)
         {
             moveGrid.Children.Add(_element.ElementGrid);
         }
@@ -90,14 +94,14 @@ namespace LogicGate
             staticCanvas.MouseMove += (sender, args) => { OnMouseMove.Invoke(args.GetPosition(staticCanvas)); };
             staticCanvas.MouseLeave += (sender, args) => { ResetEvents(); };
             OnRightClickDown += RightDragOrClick;
-            staticCanvas.SizeChanged += (sender, args) => {  };
+            staticCanvas.SizeChanged += (sender, args) => { };
         }
 
         public Point MousePosToGridPos(Point _mousePos)
         {
             Point _gridPos = new(_mousePos.X - outerBorder.Margin.Left - innerBorder.Margin.Left - moveGrid.Margin.Left, _mousePos.Y - outerBorder.Margin.Top - innerBorder.Margin.Top - moveGrid.Margin.Top);
-            Debug.WriteLine("Mouse is at " + _mousePos.X + " - " + _mousePos.Y);
-            Debug.WriteLine("Mouse on grid is at " + _gridPos.X + " - " + _gridPos.Y);
+            //Debug.WriteLine("Mouse is at " + _mousePos.X + " - " + _mousePos.Y);
+            //Debug.WriteLine("Mouse on grid is at " + _gridPos.X + " - " + _gridPos.Y);
             return _gridPos;
         }
 
@@ -114,8 +118,8 @@ namespace LogicGate
 
         void ResetRightDragOrClick()
         {
-            OnRightClickUp = delegate { };
-            OnMouseMove = delegate { };
+            OnRightClickUp -= OpenMenu;
+            OnMouseMove -= StartMovingGrid;
         }
 
         void OpenMenu(Point _mousePos)
@@ -126,6 +130,7 @@ namespace LogicGate
 
         void StartMovingGrid(Point _mousePos)
         {
+            Debug.WriteLine("Moving");
             double _leftOffset = _mousePos.X - outerBorder.Margin.Left;
             double _topOffset = _mousePos.Y - outerBorder.Margin.Top;
             mouseOffset = new(_leftOffset, _topOffset, -_leftOffset, -_topOffset);
@@ -136,7 +141,9 @@ namespace LogicGate
 
         void StopMovingGrid(Point _mousePos)
         {
-            ResetRightDragOrClick();
+            OnMouseMove -= MoveCanvas;
+            OnRightClickUp -= StopMovingGrid;
+            //ResetRightDragOrClick();
             mouseOffset = new(0);
         }
 
@@ -171,7 +178,7 @@ namespace LogicGate
                 }
             }
 
-            if(outerBorder.ActualHeight < staticCanvas.ActualHeight)
+            if (outerBorder.ActualHeight < staticCanvas.ActualHeight)
             {
                 //_topOffset = (staticCanvas.ActualHeight - outerBorder.ActualHeight) / 2;
                 _topOffset = 0;
@@ -203,9 +210,10 @@ namespace LogicGate
             Debug.WriteLine("Grid size is " + staticCanvas.ActualWidth + " - " + staticCanvas.ActualHeight);
         }
 
-        void MouseLock(Point _mousePos)
+        public void SetHoveredElement(DesignElement? _element)
         {
-            
+            hoveredElement = _element;
+            OnElementHovered(hoveredElement);
         }
     }
 }

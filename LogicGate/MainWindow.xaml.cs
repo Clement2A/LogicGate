@@ -40,9 +40,8 @@ namespace LogicGate
             mainGrid.Children.Add(_designGrid.staticCanvas);
             mainGrid.MouseUp += CanvasOnMouseUp;
             Connector _de = new(_designGrid);
-            _de.CanBeDragged = true;
             Connector _dee = new(_designGrid);
-            _dee.CanBeDragged = true;
+            Connector _deee = new(_designGrid);
             //moveGrid.Width = 1500;
             //moveGrid.Height = 1500;
             //mainGrid.Children.Add(_designGrid.StaticGrid);
