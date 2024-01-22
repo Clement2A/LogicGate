@@ -27,6 +27,12 @@ namespace LogicGate
         static public double ConnectorShapeSize => 10;
         static public Thickness ConnectorShapeOffset => new Thickness(ConnectorShapeSize/2, ConnectorShapeSize/2, 0, 0);
 
+        #region Logic
+        static public Brush LogicStrokeColor => new SolidColorBrush(Color.FromArgb(0xff, 0x00, 0x00, 0x00));
+        static public double LogicStrokeThickness => 5;
+        static public double InputSize => 50;
+        #endregion
+
         #endregion
         #region Misc
         static public Brush OnColor => new SolidColorBrush(Color.FromArgb(0xff, 0x00, 0xff, 0x00));

@@ -60,7 +60,7 @@ namespace LogicGate
             Connector? _connector = (Connector?)grid.HoveredElement;
             if (_connector == null)
             {
-                Connector _newConnector = new(grid);
+                DraggableConnector _newConnector = new(grid);
                 _mousePos = grid.MousePosToGridPos(_mousePos);
                 _mousePos.X -= DefaultValuesLibrary.ConnectorHandleSize / 2;
                 _mousePos.Y -= DefaultValuesLibrary.ConnectorHandleSize / 2;

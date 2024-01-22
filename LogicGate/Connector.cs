@@ -16,6 +16,7 @@ namespace LogicGate
     internal class Connector : DesignElement
     {
         Ellipse connectorShape;
+        protected Ellipse moveHandle;
         List<Connector> connectors = new();
 
         public List<Connector> Connectors => connectors;
@@ -24,7 +25,7 @@ namespace LogicGate
 
         public Connector(DesignGrid _grid) : base(_grid)
         {
-            Ellipse _moveHandle = new Ellipse
+            moveHandle = new Ellipse
             {
                 Fill = DefaultValuesLibrary.ConnectorHandleColor,
                 Height = DefaultValuesLibrary.ConnectorHandleSize,
@@ -32,11 +33,10 @@ namespace LogicGate
                 Margin = DefaultValuesLibrary.ConnectorHandleOffset,
                 VerticalAlignment = VerticalAlignment.Top,
                 HorizontalAlignment = HorizontalAlignment.Left,
-                Cursor = Cursors.SizeAll,
+                Cursor = Cursors.Hand,
             };
-            MakeElementDraggable(_moveHandle);
-            MakeElementHoverable(_moveHandle);
-            AddElement(_moveHandle);
+            MakeElementHoverable(moveHandle);
+            AddElement(moveHandle);
             connectorShape = new Ellipse
             {
                 Fill = DefaultValuesLibrary.ConnectorInactiveColor,
@@ -61,7 +61,6 @@ namespace LogicGate
         void OnCreateWire(Point _position)
         {
             grid.OnMouseMove -= OnCreateWire;
-            Debug.WriteLine("Create a wire and move it around");
             Wire _wire = new Wire(grid, this);
         }
 

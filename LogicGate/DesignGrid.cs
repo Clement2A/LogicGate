@@ -93,6 +93,7 @@ namespace LogicGate
             staticCanvas.MouseLeftButtonUp += (sender, args) => { OnLeftClickUp.Invoke(args.GetPosition(staticCanvas)); };
             staticCanvas.MouseMove += (sender, args) => { OnMouseMove.Invoke(args.GetPosition(staticCanvas)); };
             staticCanvas.MouseLeave += (sender, args) => { ResetEvents(); };
+
             OnRightClickDown += RightDragOrClick;
             staticCanvas.SizeChanged += (sender, args) => { };
         }

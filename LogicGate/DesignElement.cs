@@ -42,6 +42,11 @@ namespace LogicGate
             _dragElement.PreviewMouseLeftButtonDown += StartDraggableBehaviour;
         }
 
+        protected void MakeElementClickableOrDraggable(UIElement _dragElement)
+        {
+            _dragElement.PreviewMouseLeftButtonDown += StartClickOrDragBehaviour;
+        }
+
         protected void MakeElementHoverable(UIElement _hoverElement)
         {
             _hoverElement.MouseEnter += StartHoverBehaviour;
@@ -64,13 +69,50 @@ namespace LogicGate
             elementGrid.Children.Add(_shape);
         }
 
+        protected void AddElement(DesignElement _element)
+        {
+            Panel _parent = (Panel)VisualTreeHelper.GetParent(_element.elementGrid);
+            _parent.Children.Remove(_element.elementGrid);
+            elementGrid.Children.Add(_element.elementGrid);
+        }
+
         protected void StartDraggableBehaviour(object _sender, MouseButtonEventArgs _e)
         {
-            Point _gridPos = grid.MousePosToGridPos(_e.GetPosition(grid.StaticGrid));
+            StartDraggableBehaviour( _e.GetPosition(grid.StaticGrid));
+        }
+        protected void StartDraggableBehaviour(object _sender, MouseEventArgs _e)
+        {
+            StartDraggableBehaviour( _e.GetPosition(grid.StaticGrid));
+        }
+
+        protected void StartDraggableBehaviour(Point _mousePos)
+        {
+            Point _gridPos = grid.MousePosToGridPos(_mousePos);
             grid.SelectionOffset = new Point(elementGrid.Margin.Left - _gridPos.X, elementGrid.Margin.Top - _gridPos.Y);
             grid.OnMouseMove += OnMoveAround;
             grid.OnLeftClickUp += OnUnselect;
             //Debug.WriteLine("selected");
+        }
+
+        private void StartClickOrDragBehaviour(object _sender, MouseButtonEventArgs _e)
+        {
+            grid.OnMouseMove += StartDraggableBehaviour;
+            grid.OnMouseMove += RemoveClickOrDragEvents;
+            grid.OnLeftClickUp += OnAction;
+            grid.OnLeftClickUp += RemoveClickOrDragEvents;
+        }
+
+        private void RemoveClickOrDragEvents(Point point)
+        {
+            grid.OnMouseMove -= StartDraggableBehaviour;
+            grid.OnMouseMove -= RemoveClickOrDragEvents;
+            grid.OnLeftClickUp -= OnAction;
+            grid.OnLeftClickUp -= RemoveClickOrDragEvents;
+        }
+
+        protected virtual void OnAction(Point point)
+        {
+            //Empty, each subsequent class will implement it themselves
         }
 
         protected void OnMoveAround(Point _position)
