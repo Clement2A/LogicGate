@@ -69,13 +69,6 @@ namespace LogicGate
             elementGrid.Children.Add(_shape);
         }
 
-        protected void AddElement(DesignElement _element)
-        {
-            Panel _parent = (Panel)VisualTreeHelper.GetParent(_element.elementGrid);
-            _parent.Children.Remove(_element.elementGrid);
-            elementGrid.Children.Add(_element.elementGrid);
-        }
-
         protected void StartDraggableBehaviour(object _sender, MouseButtonEventArgs _e)
         {
             StartDraggableBehaviour( _e.GetPosition(grid.StaticGrid));
@@ -115,7 +108,7 @@ namespace LogicGate
             //Empty, each subsequent class will implement it themselves
         }
 
-        protected void OnMoveAround(Point _position)
+        public void OnMoveAround(Point _position)
         {
             Point _gridPos = grid.MousePosToGridPos(_position);
             _gridPos.X += grid.SelectionOffset.X;
@@ -150,6 +143,11 @@ namespace LogicGate
             if (_position.Y < 0)
                 _position.Y = 0;
             elementGrid.Margin = new(_position.X, _position.Y, 0, 0);
+            OnElementMove.Invoke(elementGrid.Margin);
+        }
+        public Point GetPosition()
+        {
+            return new Point(elementGrid.Margin.Left, elementGrid.Margin.Top);
         }
     }
 }

@@ -39,9 +39,9 @@ namespace LogicGate
             DesignGrid _designGrid = new DesignGrid();
             mainGrid.Children.Add(_designGrid.staticCanvas);
             mainGrid.MouseUp += CanvasOnMouseUp;
-            Connector _de = new(_designGrid);
-            Connector _dee = new(_designGrid);
-            Connector _deee = new(_designGrid);
+            //Connector _de = new(_designGrid);
+            //Connector _dee = new(_designGrid);
+            //Connector _deee = new(_designGrid);
             LogicInput _input = new(_designGrid);
             //moveGrid.Width = 1500;
             //moveGrid.Height = 1500;

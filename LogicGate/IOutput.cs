@@ -10,8 +10,10 @@ namespace LogicGate
 {
     interface IOutput
     {
-        Connector Output { get; }
+        OutputConnector Output { get; }
         bool OutputResult { get; set; }
+
+        int Id { get; set; }
 
         public event Action<bool> OnOutputChange;
 

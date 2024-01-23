@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,9 +13,10 @@ namespace LogicGate
     class LogicInput : LogicElement, IOutput
     {
         Ellipse inputShape;
-        public Connector Output { get; }
+        public OutputConnector Output { get; }
 
         public bool OutputResult { get; set; } = false;
+        public int Id { get; set; } = 24;
 
         public event Action<bool> OnOutputChange = delegate { };
 
@@ -34,8 +36,9 @@ namespace LogicGate
             MakeElementClickableOrDraggable(inputShape);
             AddElement(inputShape);
 
-            Output = new Connector(_grid);
-            AddElement(Output);
+            Output = new OutputConnector(_grid, this, DefaultValuesLibrary.InputConnectorOffset);
+
+            //OnElementMoveOffset += Output.OnMoveAround;
 
             OnOutputChange += UpdateVisualFromOutput;
         }
@@ -49,6 +52,8 @@ namespace LogicGate
         protected override void OnAction(Point point)
         {
             OutputResult = OutputEquation();
+
+            Debug.WriteLine("Switching, it is now " + (OutputResult ? "On" : "Off"));
             OnOutputChange.Invoke(OutputResult);
         }
 
