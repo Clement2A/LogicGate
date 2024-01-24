@@ -14,9 +14,7 @@ namespace LogicGate
     {
         Ellipse inputShape;
         public OutputConnector Output { get; }
-
         public bool OutputResult { get; set; } = false;
-        public int Id { get; set; } = 24;
 
         public event Action<bool> OnOutputChange = delegate { };
 
@@ -38,20 +36,18 @@ namespace LogicGate
 
             Output = new OutputConnector(_grid, this, DefaultValuesLibrary.InputConnectorOffset);
 
-            //OnElementMoveOffset += Output.OnMoveAround;
-
             OnOutputChange += UpdateVisualFromOutput;
         }
 
-
         public bool OutputEquation()
         {
-            return !OutputResult;
+            return OutputResult;
         }
 
         protected override void OnAction(Point point)
         {
-            OutputResult = OutputEquation();
+            OutputResult = !OutputEquation();
+            Debug.WriteLine("Debug is now " + OutputResult);
 
             OnOutputChange.Invoke(OutputResult);
         }

@@ -13,8 +13,6 @@ namespace LogicGate
         OutputConnector Output { get; }
         bool OutputResult { get; set; }
 
-        int Id { get; set; }
-
         public event Action<bool> OnOutputChange;
 
         bool OutputEquation();

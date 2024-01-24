@@ -20,16 +20,15 @@ namespace LogicGate
         List<Connector> connectors = new();
         Connector? inputConnector = null;
 
-        public Connector? InputConnector => inputConnector;
+        bool isOn = false;
 
-        protected LogicElement? input = null;
+        public bool IsOn => isOn;
+
+        public event Action<bool> OnInputChanged = delegate { };
 
         public int id = 0;
 
         static int idCount = 0;
-
-        public event Action<Connector> OnGetInput = delegate { };
-        public event Action OnLoseInput = delegate { };
 
         public List<Connector> Connectors => connectors;
 
@@ -77,67 +76,30 @@ namespace LogicGate
             Wire _wire = new Wire(grid, this);
         }
 
-        public void AddConnector(Connector _connector, bool _isInputOrigin)
+        public void AddConnector(Connector _connector)
         {
             connectors.Add(_connector);
-            if(_isInputOrigin)
-            {
-                SetInput(_connector);
-                _connector.OnLoseInput += RemoveInput;
-            }
-            else if(input == null)
-            {
-                _connector.OnGetInput += SetInput;
-            }
+            _connector.OnInputChanged += ChangeInputState;
+        }
+
+        public void ChangeInputState(bool _input)
+        {
+            Debug.WriteLine("Connector " + id + " changing state, going from " + isOn + " to " + _input);
+            if (isOn == _input)
+                return;
+            isOn = _input;
+            OnInputChanged.Invoke(isOn);
         }
 
         public void RemoveConnector(Connector _connector)
         {
             connectors.Remove(_connector);
-            if(input != null && inputConnector == _connector)
-            {
-                RemoveInput();
-            }
+            _connector.OnInputChanged -= ChangeInputState;
         }
 
         public void ResetInCircuit()
         {
             InCircuit = false;
-        }
-
-        public LogicElement? GetInput()
-        {
-            return input;
-        }
-
-        public virtual void SetInput(Connector _input)
-        {
-            if(input != null)
-                return;
-            foreach (Connector _connector in connectors) 
-            {
-                _connector.OnGetInput -= SetInput;
-            }
-            inputConnector = _input;
-            input = _input.GetInput();
-            Debug.WriteLine("Number " + id + " has a new input: " + _input.id);
-            OnGetInput.Invoke(this);
-        }
-
-        public virtual void RemoveInput()
-        {
-            if (input == null)
-                return;
-            Debug.WriteLine("Number " + id + " has lost its input");
-            foreach (Connector _connector in connectors)
-            {
-                _connector.OnGetInput += SetInput;
-                Debug.WriteLine("Number " + id + " looks at " + _connector.id + " for a new input");
-            }
-            inputConnector!.OnLoseInput -= RemoveInput;
-            OnLoseInput.Invoke();
-            inputConnector = null;
-            input = null;
         }
     }
 }
