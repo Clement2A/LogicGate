@@ -19,6 +19,9 @@ namespace LogicGate
         protected Ellipse moveHandle;
         List<Connector> connectors = new();
         Connector? inputConnector = null;
+
+        public Connector? InputConnector => inputConnector;
+
         protected LogicElement? input = null;
 
         public int id = 0;
@@ -79,11 +82,10 @@ namespace LogicGate
             connectors.Add(_connector);
             if(_isInputOrigin)
             {
-                Debug.WriteLine("Number " + _connector.id + " is the input of number " + id);
                 SetInput(_connector);
                 _connector.OnLoseInput += RemoveInput;
             }
-            else
+            else if(input == null)
             {
                 _connector.OnGetInput += SetInput;
             }
@@ -91,11 +93,9 @@ namespace LogicGate
 
         public void RemoveConnector(Connector _connector)
         {
-            Debug.WriteLine("This is number " + id + ", removing connector number " + _connector.id + " from my list");
             connectors.Remove(_connector);
             if(input != null && inputConnector == _connector)
             {
-                Debug.WriteLine(_connector.id + " is also my input, removing that aswell");
                 RemoveInput();
             }
         }
@@ -112,16 +112,32 @@ namespace LogicGate
 
         public virtual void SetInput(Connector _input)
         {
+            if(input != null)
+                return;
+            foreach (Connector _connector in connectors) 
+            {
+                _connector.OnGetInput -= SetInput;
+            }
             inputConnector = _input;
             input = _input.GetInput();
-            OnGetInput.Invoke(inputConnector);
+            Debug.WriteLine("Number " + id + " has a new input: " + _input.id);
+            OnGetInput.Invoke(this);
         }
 
         public virtual void RemoveInput()
         {
-            Debug.WriteLine("Number " + id + " lost its input");
-            input = null;
+            if (input == null)
+                return;
+            Debug.WriteLine("Number " + id + " has lost its input");
+            foreach (Connector _connector in connectors)
+            {
+                _connector.OnGetInput += SetInput;
+                Debug.WriteLine("Number " + id + " looks at " + _connector.id + " for a new input");
+            }
+            inputConnector!.OnLoseInput -= RemoveInput;
             OnLoseInput.Invoke();
+            inputConnector = null;
+            input = null;
         }
     }
 }

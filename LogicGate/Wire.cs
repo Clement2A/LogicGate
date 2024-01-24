@@ -45,12 +45,12 @@ namespace LogicGate
                 Y1 = input.ElementGrid.Margin.Top + input.ElementGrid.ActualHeight / 2,
                 X2 = input.ElementGrid.Margin.Left + input.ElementGrid.ActualWidth / 2,
                 Y2 = input.ElementGrid.Margin.Top + input.ElementGrid.ActualHeight / 2,
-                StrokeDashArray = new DoubleCollection() { 2, 2.5 },
+                StrokeDashArray = DefaultValuesLibrary.FlowDashArray,
                 StrokeDashCap = PenLineCap.Round,
                 StrokeLineJoin = PenLineJoin.Round,
                 StrokeEndLineCap = PenLineCap.Round,
                 StrokeStartLineCap = PenLineCap.Round,
-                StrokeDashOffset = 4.5,
+                StrokeDashOffset = DefaultValuesLibrary.FlowDashOffset,
                 Cursor = Cursors.Hand,
                 IsHitTestVisible = false,
             };
@@ -60,10 +60,7 @@ namespace LogicGate
             _anim.RepeatBehavior = RepeatBehavior.Forever;
             flow.BeginAnimation(Shape.StrokeDashOffsetProperty, _anim);
 
-            
-
             ConnectorLoopPrevention.StartLoopPrevention(input);
-            //input.OnElementMove += UpdateFirstPosition;
             AddElement(wire);
             AddElement(flow);
             grid.SelectionOffset = new Point(0, 0);
@@ -104,19 +101,14 @@ namespace LogicGate
                 _mousePos.Y -= DefaultValuesLibrary.ConnectorHandleSize / 2;
                 _newConnector.SetPosition(_mousePos);
                 ConnectSecondPosition(_newConnector);
-                ConnectorLoopPrevention.StopLoopPrevention();
-                grid.OnElementHovered -= UpdateVisual;
-                return;
             }
-
-            if (_connector == input || _connector.InCircuit)
+            else if (_connector == input || _connector.InCircuit)
             {
                 DeleteElement();
-                ConnectorLoopPrevention.StopLoopPrevention();
-                return;
             }
+            else
+                ConnectSecondPosition(_connector);
 
-            ConnectSecondPosition(_connector);
             ConnectorLoopPrevention.StopLoopPrevention();
             grid.OnElementHovered -= UpdateVisual;
         }
@@ -129,25 +121,27 @@ namespace LogicGate
             flow.X2 = output.ElementGrid.Margin.Left + DefaultValuesLibrary.ConnectorHandleSize / 2;
             flow.Y2 = output.ElementGrid.Margin.Top + DefaultValuesLibrary.ConnectorHandleSize / 2;
 
-            
+            Debug.WriteLine("Setting up wire " + input.id + "-" + output.id);
+
             bool _isOutputOrigin = output.GetInput() != null;
             bool _isInputOrigin = input.GetInput() != null;
+            SetupEvent();
             output.AddConnector(input, _isInputOrigin);
             input.AddConnector(output, _isOutputOrigin);
-            SetupEvent();
             if (_isInputOrigin)
             {
-                Debug.WriteLine("Input is already input");
+                Debug.WriteLine("Wire " + input.id + " - " + output.id + " ---> Input is input, normal behaviour");
                 ConnectInput();
             }
             else if (_isOutputOrigin)
             {
-                Debug.WriteLine("Input is output, swapping");
+                Debug.WriteLine("Wire " + input.id + " - " + output.id + " ---> Output is input, swapping");
                 SwapConnectors();
+                ConnectInput();
             }
             else
             {
-                Debug.WriteLine("No one is input, waiting");
+                Debug.WriteLine("Wire " + input.id + " - " + output.id + " ---> No one is input, waiting");
                 InitInputEvents();
             }
             wire.MouseRightButtonDown += (s, e) => { DeleteElement(); };
@@ -156,23 +150,34 @@ namespace LogicGate
         private void InitInputEvents()
         {
             input.OnGetInput += RemoveInitInputEvents;
-            output.OnGetInput += RemoveInitInputEvents;
-            input.OnGetInput += ConnectInput;
-            output.OnGetInput += SwapThenConnectInput;
+            output!.OnGetInput += RemoveInitInputEvents;
+            input.OnGetInput += CheckOrderInput;
+            output.OnGetInput += CheckOrderOutput;
         }
 
         private void RemoveInitInputEvents(Connector _notNeeded)
         {
             input.OnGetInput -= RemoveInitInputEvents;
-            output.OnGetInput -= RemoveInitInputEvents;
-            input.OnGetInput -= ConnectInput;
-            output.OnGetInput -= SwapThenConnectInput;
+            output!.OnGetInput -= RemoveInitInputEvents;
+            input.OnGetInput -= CheckOrderInput;
+            output.OnGetInput -= CheckOrderOutput;
         }
 
-        private void SwapThenConnectInput(Connector _notNeeded)
+        private void CheckOrderOutput(Connector _notNeeded)
         {
+            Debug.WriteLine("Wire " + input.id + "-" + output.id + " received new input from output, it is " + _notNeeded.id);
+            if (_notNeeded.InputConnector == input)
+                return;
             SwapConnectors();
-            ConnectInput(_notNeeded);
+            ConnectInput();
+        }
+
+        private void CheckOrderInput(Connector _notNeeded)
+        {
+            Debug.WriteLine("Wire " + input.id + "-" + output.id + " received new input from output, it is " + _notNeeded.id);
+            if (_notNeeded.InputConnector == output)
+                return;
+            ConnectInput();
         }
 
         private void ConnectInput(Connector _notNeeded)
@@ -181,13 +186,14 @@ namespace LogicGate
         }
         private void ConnectInput()
         {
+            Debug.WriteLine("Wire between number " + input.id + " and " + output!.id + " found an input again! It's the first one");
             IOutput? _origin = input.GetInput() as IOutput;
             if(_origin == null)
             {
                 Debug.WriteLine("ERROR: Given connector input doesn't actually have an input");
                 return;
             }
-            Debug.WriteLine("Got origin! It's " + _origin.Id);
+            SwitchFlow(_origin.OutputResult);
             _origin.OnOutputChange += SwitchFlow;
             SetupInputLostEvents();
         }
@@ -199,10 +205,11 @@ namespace LogicGate
 
         private void SetupInputEvent()
         {
+            Debug.WriteLine("Wire between number " + input.id + " and " + output!.id + " does not have an actual input anymore");
+            SwitchFlow(false);
             IOutput? _origin = input.GetInput() as IOutput;
             if (_origin == null)
             {
-                //Triggers afeter input loss
                 Debug.WriteLine("ERROR: Given connector input doesn't actually have an input");
                 return;
             }
@@ -217,20 +224,34 @@ namespace LogicGate
             output!.OnElementMove += UpdateSecondPosition;
         }
 
+        void UpdateFirstPosition(Point _pos)
+        {
+            double _x1 = _pos.X + input.ElementGrid.ActualWidth / 2;
+            double _y1 = _pos.Y + input.ElementGrid.ActualHeight / 2;
+            wire.X1 = _x1;
+            wire.Y1 = _y1;
+            flow.X1 = _x1;
+            flow.Y1 = _y1;
+        }
+
         void UpdateFirstPosition(Thickness _pos)
         {
-            wire.X1 = _pos.Left + input.ElementGrid.ActualWidth / 2;
-            wire.Y1 = _pos.Top + input.ElementGrid.ActualHeight / 2;
-            flow.X1 = _pos.Left + input.ElementGrid.ActualWidth / 2;
-            flow.Y1 = _pos.Top + input.ElementGrid.ActualHeight / 2;
+            UpdateFirstPosition(new Point(_pos.Left, _pos.Top));
+        }
+
+        void UpdateSecondPosition(Point _pos)
+        {
+            double _x2 = _pos.X + output!.ElementGrid.ActualWidth / 2;
+            double _y2 = _pos.Y + output.ElementGrid.ActualHeight / 2;
+            wire.X2 = _x2;
+            wire.Y2 = _y2;
+            flow.X2 = _x2;
+            flow.Y2 = _y2;
         }
 
         void UpdateSecondPosition(Thickness _pos)
         {
-            wire.X2 = _pos.Left + output!.ElementGrid.ActualWidth / 2;
-            wire.Y2 = _pos.Top + output.ElementGrid.ActualHeight / 2;
-            flow.X2 = _pos.Left + output!.ElementGrid.ActualWidth / 2;
-            flow.Y2 = _pos.Top + output.ElementGrid.ActualHeight / 2;
+            UpdateSecondPosition(new Point(_pos.Left, _pos.Top));
         }
 
         void UpdateSecondPositionFromMouse(Point _mousePos)
@@ -245,43 +266,58 @@ namespace LogicGate
         protected override void DeleteElement()
         {
             base.DeleteElement();
-            
+
+
             input.OnElementMove -= UpdateFirstPosition;
             if (output == null)
                 return;
-            //Debug.WriteLine("Removing output from input, shouldn't trigger anything");
+            CancelAllPossibleEvents();
             input.RemoveConnector(output);
-            output.OnElementMove -= UpdateSecondPosition;
-            //Debug.WriteLine("Removing input from output, remove events");
             output.RemoveConnector(input);
         }
 
         void SwitchFlow(bool _isOn)
         {
+            Debug.WriteLine("I am wire " + input.id + " - " + output?.id + ".Result from my input number " + input.id + " has changed");
             isOn = _isOn;
             flow.Stroke = _isOn ? DefaultValuesLibrary.FlowOnColor : DefaultValuesLibrary.FlowOffColor;
         }
 
         void SwapConnectors()
         {
-            //IOutput? _origin = input.GetInput() as IOutput;
-            //if (_origin != null)
-            //    _origin.OnOutputChange -= SwitchFlow;
-
             input.OnElementMove -= UpdateFirstPosition;
             output!.OnElementMove -= UpdateSecondPosition;
-
+            
             Connector _temp = input;
             input = output;
             output = _temp;
-
-            //_origin = input.GetInput() as IOutput;
-            //if (_origin != null)
-            //    _origin.OnOutputChange -= SwitchFlow;
-
+            
             input.OnElementMove += UpdateFirstPosition;
             output.OnElementMove += UpdateSecondPosition;
+            
+            UpdateFirstPosition(input.GetPosition());
+            UpdateSecondPosition(output.GetPosition());
         }
-        
+
+        void CancelAllPossibleEvents()
+        {
+            input.OnElementMove -= UpdateFirstPosition;
+            output.OnElementMove -= UpdateSecondPosition;
+            input.OnElementMove -= UpdateFirstPosition;
+            output!.OnElementMove -= UpdateSecondPosition;
+            input.OnLoseInput -= SetupInputEvent;
+            input.OnGetInput -= RemoveInitInputEvents;
+            output!.OnGetInput -= RemoveInitInputEvents;
+            input.OnGetInput -= CheckOrderInput;
+            output.OnGetInput -= CheckOrderOutput;
+            grid.OnMouseMove -= UpdateSecondPositionFromMouse;
+            grid.OnElementHovered -= UpdateVisual;
+            grid.OnLeftClickUp -= SetWire;
+
+            IOutput? _origin = input.GetInput() as IOutput;
+            if (_origin == null)
+                return;
+            _origin.OnOutputChange -= SwitchFlow;
+        }
     }
 }

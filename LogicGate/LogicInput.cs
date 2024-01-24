@@ -53,7 +53,6 @@ namespace LogicGate
         {
             OutputResult = OutputEquation();
 
-            Debug.WriteLine("Switching, it is now " + (OutputResult ? "On" : "Off"));
             OnOutputChange.Invoke(OutputResult);
         }
 

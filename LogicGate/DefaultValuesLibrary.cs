@@ -17,11 +17,15 @@ namespace LogicGate
         static public Brush WireColor => new SolidColorBrush(Color.FromArgb(0xff, 0x00, 0x00, 0x00));
         static public Brush WireInvalidColor => new SolidColorBrush(Color.FromArgb(0xff, 0xff, 0x00, 0x00));
         static public Brush WirePoweredColor => new SolidColorBrush(Color.FromArgb(0xff, 0x00, 0xff, 0x00));
-        static public double WireThickness => 6;
-        static public Brush FlowOnColor => new SolidColorBrush(Color.FromArgb(0xff, 0x00, 0xff, 0x00));
+        static public double WireThickness => 3;
+        static public Brush FlowOnColor => new SolidColorBrush(Color.FromArgb(0xff, 0xff, 0xcc, 0x00));
         static public Brush FlowOffColor => new SolidColorBrush(Color.FromArgb(0x00, 0x00, 0xff, 0x00));
-        static public double FlowThickness => 4;
-        static public DoubleAnimation FlowAnimation => new DoubleAnimation(0, TimeSpan.FromSeconds(1));
+        static public double FlowThickness => 8;
+        static public double FlowDashSize => .5;
+        static public double FlowSpaceSize => 4.5;
+        static public DoubleCollection FlowDashArray => new DoubleCollection() { FlowDashSize, FlowSpaceSize };
+        static public double FlowDashOffset => FlowDashSize + FlowSpaceSize;
+        static public DoubleAnimation FlowAnimation => new DoubleAnimation(0, TimeSpan.FromSeconds(.75));
         #endregion
 
         #region Connector
