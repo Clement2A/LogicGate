@@ -25,7 +25,6 @@ namespace LogicGate
 
         public DesignElement(DesignGrid _grid)
         {
-            Debug.WriteLine("DraggableElement construct");
             grid = _grid;
             elementGrid = new Grid
             {
@@ -133,7 +132,6 @@ namespace LogicGate
             elementGrid.Children.Clear();
             Panel _parent = (Panel)VisualTreeHelper.GetParent(elementGrid);
             _parent.Children.Remove(elementGrid);
-            Debug.WriteLine("Element deletion is done");
         }
 
         public void SetPosition(Point _position)

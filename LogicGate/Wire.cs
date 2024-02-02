@@ -68,7 +68,7 @@ namespace LogicGate
             grid.OnElementHovered += UpdateVisual;
             grid.OnLeftClickUp += SetWire;
 
-            DisplayFlow(firstConnector.IsOn);
+            DisplayFlow(firstConnector.IsOn, null, null);
         }
 
         private void UpdateVisual(DesignElement? element)
@@ -101,11 +101,12 @@ namespace LogicGate
             else if (_connector == firstConnector || _connector.InCircuit)
             {
                 DeleteElement();
+                return;
             }
             else
                 ConnectSecondPosition(_connector);
 
-            secondConnector.ChangeInputState(firstConnector.IsOn);
+            secondConnector.ChangeInputState(firstConnector.IsOn,null,firstConnector);
             ConnectorLoopPrevention.StopLoopPrevention();
             grid.OnElementHovered -= UpdateVisual;
         }
@@ -118,12 +119,17 @@ namespace LogicGate
             flow.X2 = secondConnector.ElementGrid.Margin.Left + DefaultValuesLibrary.ConnectorHandleSize / 2;
             flow.Y2 = secondConnector.ElementGrid.Margin.Top + DefaultValuesLibrary.ConnectorHandleSize / 2;
 
-            Debug.WriteLine("Setting up wire " + firstConnector.id + "-" + secondConnector.id);
-
             SetupEvent();
             secondConnector.AddConnector(firstConnector);
             firstConnector.AddConnector(secondConnector);
             wire.MouseRightButtonDown += (s, e) => { DeleteElement(); };
+
+            if(secondConnector.IsOn)
+            {
+                SwapConnectors();
+                DisplayFlow(true, null, null);
+            }
+
         }
 
         private void SetupEvent()
@@ -131,7 +137,7 @@ namespace LogicGate
             firstConnector.OnElementMove += UpdateFirstPosition;
             secondConnector!.OnElementMove += UpdateSecondPosition;
             firstConnector.OnInputChanged += DisplayFlow;
-            secondConnector.OnInputChanged += DisplayFlow;
+            secondConnector.OnInputChanged += CheckForSwitch;
         }
 
         void UpdateFirstPosition(Point _pos)
@@ -177,24 +183,32 @@ namespace LogicGate
         {
             base.DeleteElement();
 
-
             firstConnector.OnElementMove -= UpdateFirstPosition;
             if (secondConnector == null)
                 return;
             firstConnector.RemoveConnector(secondConnector);
             secondConnector.RemoveConnector(firstConnector);
+
+            if (!isOn)
+                return;
+
+            secondConnector.ChangeInputState(false, null, null);
         }
 
-        void DisplayFlow(bool _isOn)
+        void DisplayFlow(bool _isOn, Connector? _prevSource, Connector? _origin)
         {
-            Debug.WriteLine("I am wire " + firstConnector.id + " - " + secondConnector?.id + ".Result from my input number " + firstConnector.id + " has changed");
             isOn = _isOn;
             flow.Stroke = _isOn ? DefaultValuesLibrary.FlowOnColor : DefaultValuesLibrary.FlowOffColor;
+
+            //if(secondConnector != null)
+            //    secondConnector.ChangeInputState(isOn);
         }
-        private void SwitchAndDisplayFlow(bool _input)
+        private void CheckForSwitch(bool _input, Connector? _prevSource, Connector? _origin)
         {
+            if(_prevSource == firstConnector) 
+                return;
             SwapConnectors();
-            DisplayFlow(_input);
+            DisplayFlow(_input, _prevSource, _origin);
         }
 
         void SwapConnectors()
@@ -203,11 +217,22 @@ namespace LogicGate
             firstConnector.OnElementMove -= UpdateFirstPosition;
             secondConnector!.OnElementMove -= UpdateSecondPosition;
             firstConnector.OnInputChanged -= DisplayFlow;
-            secondConnector.OnInputChanged -= SwitchAndDisplayFlow;
+            secondConnector.OnInputChanged -= CheckForSwitch;
 
             Connector _temp = firstConnector;
             firstConnector = secondConnector;
             secondConnector = _temp;
+
+
+            flow.X1 = firstConnector.ElementGrid.Margin.Left + DefaultValuesLibrary.ConnectorHandleSize / 2;
+            flow.Y1 = firstConnector.ElementGrid.Margin.Top + DefaultValuesLibrary.ConnectorHandleSize / 2;
+            flow.X2 = secondConnector.ElementGrid.Margin.Left + DefaultValuesLibrary.ConnectorHandleSize / 2;
+            flow.Y2 = secondConnector.ElementGrid.Margin.Top + DefaultValuesLibrary.ConnectorHandleSize / 2;
+
+            wire.X1 = firstConnector.ElementGrid.Margin.Left + DefaultValuesLibrary.ConnectorHandleSize / 2;
+            wire.Y1 = firstConnector.ElementGrid.Margin.Top + DefaultValuesLibrary.ConnectorHandleSize / 2;
+            wire.X2 = secondConnector.ElementGrid.Margin.Left + DefaultValuesLibrary.ConnectorHandleSize / 2;
+            wire.Y2 = secondConnector.ElementGrid.Margin.Top + DefaultValuesLibrary.ConnectorHandleSize / 2;
 
             SetupEvent();
 

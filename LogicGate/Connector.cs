@@ -24,7 +24,7 @@ namespace LogicGate
 
         public bool IsOn => isOn;
 
-        public event Action<bool> OnInputChanged = delegate { };
+        public event Action<bool, Connector?, Connector?> OnInputChanged = delegate { };
 
         public int id = 0;
 
@@ -82,13 +82,12 @@ namespace LogicGate
             _connector.OnInputChanged += ChangeInputState;
         }
 
-        public void ChangeInputState(bool _input)
+        public void ChangeInputState(bool _input, Connector? _prevSource, Connector? _origin)
         {
-            Debug.WriteLine("Connector " + id + " changing state, going from " + isOn + " to " + _input);
             if (isOn == _input)
                 return;
             isOn = _input;
-            OnInputChanged.Invoke(isOn);
+            OnInputChanged.Invoke(isOn, _origin, this);
         }
 
         public void RemoveConnector(Connector _connector)

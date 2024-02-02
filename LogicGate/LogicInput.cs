@@ -16,7 +16,7 @@ namespace LogicGate
         public OutputConnector Output { get; }
         public bool OutputResult { get; set; } = false;
 
-        public event Action<bool> OnOutputChange = delegate { };
+        public event Action<bool, Connector?, Connector?> OnOutputChange = delegate { };
 
         public LogicInput(DesignGrid _grid) : base(_grid)
         {
@@ -47,12 +47,11 @@ namespace LogicGate
         protected override void OnAction(Point point)
         {
             OutputResult = !OutputEquation();
-            Debug.WriteLine("Debug is now " + OutputResult);
 
-            OnOutputChange.Invoke(OutputResult);
+            OnOutputChange.Invoke(OutputResult, null, Output);
         }
 
-        public void UpdateVisualFromOutput(bool _output)
+        public void UpdateVisualFromOutput(bool _output, Connector? _prevSource, Connector? _origin)
         {
             inputShape.Fill = OutputResult ? DefaultValuesLibrary.OnColor : DefaultValuesLibrary.OffColor;
         }

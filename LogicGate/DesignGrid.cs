@@ -131,7 +131,6 @@ namespace LogicGate
 
         void StartMovingGrid(Point _mousePos)
         {
-            Debug.WriteLine("Moving");
             double _leftOffset = _mousePos.X - outerBorder.Margin.Left;
             double _topOffset = _mousePos.Y - outerBorder.Margin.Top;
             mouseOffset = new(_leftOffset, _topOffset, -_leftOffset, -_topOffset);
@@ -206,9 +205,6 @@ namespace LogicGate
             }
 
             outerBorder.Margin = new Thickness(_leftOffset, _topOffset, -_leftOffset, -_topOffset);
-
-            Debug.WriteLine("Move size is " + outerBorder.ActualWidth + " - " + outerBorder.ActualHeight);
-            Debug.WriteLine("Grid size is " + staticCanvas.ActualWidth + " - " + staticCanvas.ActualHeight);
         }
 
         public void SetHoveredElement(DesignElement? _element)
