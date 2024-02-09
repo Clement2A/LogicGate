@@ -17,9 +17,6 @@ namespace LogicGate
             Point _parentPos = _linkedElement.GetPosition();
             SetPosition(new Point(_parentPos.X + offset.X, _parentPos.Y + offset.Y));
             IOutput? _linkedElementOutput = _linkedElement as IOutput;
-            if (_linkedElementOutput == null)
-                return;
-            _linkedElementOutput.OnOutputChange += ChangeInputState;
         }
 
         void UpdatePosition(Thickness _pos)
