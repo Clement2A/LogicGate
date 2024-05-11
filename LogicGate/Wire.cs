@@ -106,6 +106,7 @@ namespace LogicGate
             else
                 ConnectSecondPosition(_connector);
 
+            secondConnector.ChangeInputState(firstConnector.IsOn,null,firstConnector);
             ConnectorLoopPrevention.StopLoopPrevention();
             grid.OnElementHovered -= UpdateVisual;
         }
@@ -135,12 +136,8 @@ namespace LogicGate
         {
             firstConnector.OnElementMove += UpdateFirstPosition;
             secondConnector!.OnElementMove += UpdateSecondPosition;
-        }
-
-        private void UndoEvent()
-        {
-            firstConnector.OnElementMove -= UpdateFirstPosition;
-            secondConnector!.OnElementMove -= UpdateSecondPosition;
+            firstConnector.OnInputChanged += DisplayFlow;
+            secondConnector.OnInputChanged += CheckForSwitch;
         }
 
         void UpdateFirstPosition(Point _pos)
@@ -191,17 +188,36 @@ namespace LogicGate
                 return;
             firstConnector.RemoveConnector(secondConnector);
             secondConnector.RemoveConnector(firstConnector);
+
+            if (!isOn)
+                return;
+
+            secondConnector.ChangeInputState(false, null, null);
         }
 
         void DisplayFlow(bool _isOn, Connector? _prevSource, Connector? _origin)
         {
             isOn = _isOn;
             flow.Stroke = _isOn ? DefaultValuesLibrary.FlowOnColor : DefaultValuesLibrary.FlowOffColor;
+
+            //if(secondConnector != null)
+            //    secondConnector.ChangeInputState(isOn);
+        }
+        private void CheckForSwitch(bool _input, Connector? _prevSource, Connector? _origin)
+        {
+            if(_prevSource == firstConnector) 
+                return;
+            SwapConnectors();
+            DisplayFlow(_input, _prevSource, _origin);
         }
 
         void SwapConnectors()
         {
-            UndoEvent();
+            //Swap test
+            firstConnector.OnElementMove -= UpdateFirstPosition;
+            secondConnector!.OnElementMove -= UpdateSecondPosition;
+            firstConnector.OnInputChanged -= DisplayFlow;
+            secondConnector.OnInputChanged -= CheckForSwitch;
 
             Connector _temp = firstConnector;
             firstConnector = secondConnector;

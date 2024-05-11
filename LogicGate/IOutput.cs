@@ -13,6 +13,10 @@ namespace LogicGate
         OutputConnector Output { get; }
         bool OutputResult { get; set; }
 
+        public event Action<bool, Connector?, Connector?> OnOutputChange;
+
         bool OutputEquation();
+
+        void UpdateVisualFromOutput(bool _output, Connector? _prevSource, Connector? _origin);
     }
 }
