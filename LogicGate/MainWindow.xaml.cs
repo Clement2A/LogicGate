@@ -43,6 +43,14 @@ namespace LogicGate
             //Connector _dee = new(_designGrid);
             //Connector _deee = new(_designGrid);
             LogicInput _input = new(_designGrid);
+            LogicInput _input2 = new(_designGrid);
+            LogicOutput _output = new(_designGrid);
+            LogicANDGate _and = new(_designGrid);
+            LogicNANDGate _nand = new(_designGrid);
+            LogicORGate _or = new(_designGrid);
+            LogicNORGate _nor = new(_designGrid);
+            LogicXORGate _xor = new(_designGrid);
+            LogicXNORGate _xnor = new(_designGrid);
             //moveGrid.Width = 1500;
             //moveGrid.Height = 1500;
             //mainGrid.Children.Add(_designGrid.StaticGrid);

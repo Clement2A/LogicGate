@@ -7,24 +7,14 @@ using System.Windows;
 
 namespace LogicGate
 {
-    internal class OutputConnector : Connector
+    internal class OutputConnector : LinkedConnector
     {
-        Point offset;
-        public OutputConnector(DesignGrid _grid, LogicElement _linkedElement, Point _offset) : base(_grid)
+        public OutputConnector(DesignGrid _grid, LogicElement _linkedElement, Point _offset) : base(_grid, _linkedElement, _offset)
         {
-            _linkedElement.OnElementMove += UpdatePosition;
-            offset = _offset;
-            Point _parentPos = _linkedElement.GetPosition();
-            SetPosition(new Point(_parentPos.X + offset.X, _parentPos.Y + offset.Y));
             IOutput? _linkedElementOutput = _linkedElement as IOutput;
             if (_linkedElementOutput == null)
                 return;
             _linkedElementOutput.OnOutputChange += ChangeInputState;
-        }
-
-        void UpdatePosition(Thickness _pos)
-        {
-            SetPosition(new System.Windows.Point(_pos.Left + offset.X, _pos.Top + offset.Y));
         }
 
         //public override void SetInput(LogicElement _input, Connector _connector)

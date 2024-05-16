@@ -15,8 +15,8 @@ namespace LogicGate
 
         public event Action<bool, Connector?, Connector?> OnOutputChange;
 
-        bool OutputEquation();
+        abstract bool OutputEquation();
 
-        void UpdateVisualFromOutput(bool _output, Connector? _prevSource, Connector? _origin);
+        abstract void UpdateVisualFromOutput(bool _output, Connector? _prevSource, Connector? _origin);
     }
 }

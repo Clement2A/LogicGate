@@ -41,9 +41,27 @@ namespace LogicGate
 
         #region Logic
         static public Brush LogicStrokeColor => new SolidColorBrush(Color.FromArgb(0xff, 0x00, 0x00, 0x00));
+        static public Brush LogicOffColor => new SolidColorBrush(Color.FromArgb(0xff, 0x33, 0x33, 0x44));
+        static public Brush LogicOnColor => new SolidColorBrush(Color.FromArgb(0xff, 0xff, 0xcc, 0x00));
         static public double LogicStrokeThickness => 5;
         static public double InputSize => 50;
-        static public Point InputConnectorOffset => new Point(40, 15);
+        static public Point OutputConnectorOffset => new Point(40, 15);
+        static public Point OutputConnectorNGateOffset => new Point(60, 15);
+        static public Point InputSingleConnectorOffset => new Point(-10, 15);
+        static public Point InputDoubleTopConnectorOffset => new Point(-10, 25);
+        static public Point InputDoubleDownConnectorOffset => new Point(-10, 5);
+        static public Point InputDoubleTopConnectorXGateOffset => new Point(-20, 25);
+        static public Point InputDoubleDownConnectorXGateOffset => new Point(-20, 5);
+        #endregion
+
+        #region Gate
+        static public Brush GateFillColor => new SolidColorBrush(Color.FromArgb(0xff, 0x00, 0x00, 0x00));
+        static public Geometry GateANDData => Geometry.Parse("M 0 0 L 25 0 A 25 25 0 1 1 25 50 L 0 50 Z");
+        static public Geometry GateNANDData => Geometry.Parse("M 0 0 L 25 0 A 25 25 0 1 1 25 50 L 0 50 Z M 50 25 A 5 5 0 1 1 50 25.01");
+        static public Geometry GateORData => Geometry.Parse("M 0 0 L 10 0 Q 37.5 0 50 25 Q 37.5 50 6 50 L 0 50 Q 12 25 0 0 Z");
+        static public Geometry GateNORData => Geometry.Parse("M 0 0 L 10 0 Q 37.5 0 50 25 Q 37.5 50 6 50 L 0 50 Q 12 25 0 0 Z M 50 25 A 5 5 0 1 1 50 25.01");
+        static public Geometry GateXORData => Geometry.Parse("M 0 0 L 6 0 Q 37.5 0 50 25 Q 37.5 50 6 50 L 0 50 Q 12 25 0 0 Z M -10 50 Q 12 25 -10 0 Q 12 25");
+        static public Geometry GateXNORData => Geometry.Parse("M 0 0 L 10 0 Q 60 0 80 40 Q 60 80 10 80 L 0 80 Q 20 40 0 0 Z M 80 40 A 5 5 0 1 1 80 40.01 M -10 80  Q 10 40 -10 0  Q 10 40 -10 80 ");
         #endregion
 
         #region Misc

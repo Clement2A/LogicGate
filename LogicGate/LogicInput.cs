@@ -34,7 +34,7 @@ namespace LogicGate
             MakeElementClickableOrDraggable(inputShape);
             AddElement(inputShape);
 
-            Output = new OutputConnector(_grid, this, DefaultValuesLibrary.InputConnectorOffset);
+            Output = new OutputConnector(_grid, this, DefaultValuesLibrary.OutputConnectorOffset);
 
             OnOutputChange += UpdateVisualFromOutput;
         }
