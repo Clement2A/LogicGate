@@ -33,27 +33,13 @@ namespace LogicGate
         Grid sGrid;
         Grid mGrid;
 
+        DesignGrid designGrid = new DesignGrid();
+
         public MainWindow()
         {
             InitializeComponent();
-            DesignGrid _designGrid = new DesignGrid();
-            mainGrid.Children.Add(_designGrid.staticCanvas);
+            mainGrid.Children.Add(designGrid.staticCanvas);
             mainGrid.MouseUp += CanvasOnMouseUp;
-            //Connector _de = new(_designGrid);
-            //Connector _dee = new(_designGrid);
-            //Connector _deee = new(_designGrid);
-            LogicInput _input = new(_designGrid);
-            LogicInput _input2 = new(_designGrid);
-            LogicOutput _output = new(_designGrid);
-            LogicANDGate _and = new(_designGrid);
-            LogicNANDGate _nand = new(_designGrid);
-            LogicORGate _or = new(_designGrid);
-            LogicNORGate _nor = new(_designGrid);
-            LogicXORGate _xor = new(_designGrid);
-            LogicXNORGate _xnor = new(_designGrid);
-            //moveGrid.Width = 1500;
-            //moveGrid.Height = 1500;
-            //mainGrid.Children.Add(_designGrid.StaticGrid);
             Debug.WriteLine("MainWindow is " + mainGrid.ActualWidth + " - " + mainGrid.ActualHeight);
 
         }
@@ -80,6 +66,51 @@ namespace LogicGate
         private void CanvasRightClick(object sender, MouseButtonEventArgs e)
         {
 
+        }
+
+        private void CreateInput(object sender, RoutedEventArgs e)
+        {
+            new LogicInput(designGrid);
+        }
+
+        private void CreateOutput(object sender, RoutedEventArgs e)
+        {
+            new LogicOutput(designGrid);
+        }
+
+        private void CreateAndGate(object sender, RoutedEventArgs e)
+        {
+            new LogicANDGate(designGrid);
+        }
+
+        private void CreateNandGate(object sender, RoutedEventArgs e)
+        {
+            new LogicNANDGate(designGrid);
+        }
+
+        private void CreateOrGate(object sender, RoutedEventArgs e)
+        {
+            new LogicORGate(designGrid);
+        }
+
+        private void CreateNorGate(object sender, RoutedEventArgs e)
+        {
+            new LogicNORGate(designGrid);
+        }
+
+        private void CreateXorGate(object sender, RoutedEventArgs e)
+        {
+            new LogicXORGate(designGrid);
+        }
+
+        private void CreateXnorGate(object sender, RoutedEventArgs e)
+        {
+            new LogicXNORGate(designGrid);
+        }
+
+        private void CreateNotGate(object sender, RoutedEventArgs e)
+        {
+            Debug.WriteLine("Not gate to be implemented");
         }
     }
 }

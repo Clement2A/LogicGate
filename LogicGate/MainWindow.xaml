@@ -7,16 +7,37 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="438" Width="799">
 
+    <Grid Margin="0,0,0,0" >
+        <Grid x:Name="mainGrid" Margin="0,0,0,0" Background="Black">
 
-    <Grid x:Name="mainGrid" Margin="0,0,0,0" Background="Black">
-
-        <!--<Canvas x:Name="staticGrid" Background="#FF1A2E40">
+            <!--<Canvas x:Name="staticGrid" Background="#FF1A2E40">
             <Grid x:Name="moveGrid" Background="#FF303A44" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Ellipse Fill="#FF7B3D3D" Margin="371,184,50,50" Height="100" Width="100" HorizontalAlignment="Left" VerticalAlignment="Top"/>
             </Grid>
         </Canvas>-->
+        </Grid>
+        <DockPanel VerticalAlignment="Top">
+            <Menu DockPanel.Dock="Top">
+                <MenuItem Header="_File">
+                    <MenuItem Header="_New"/>
+                    <MenuItem Header="_Open" />
+                    <MenuItem Header="_Save" />
+                </MenuItem>
+                <MenuItem Header="Create Widget">
+                    <MenuItem Header="Input" Click="CreateInput" />
+                    <MenuItem Header="Output" Click="CreateOutput" />
+                    <MenuItem Header="AND" Click="CreateAndGate" />
+                    <MenuItem Header="NAND" Click="CreateNandGate" />
+                    <MenuItem Header="OR" Click="CreateOrGate" />
+                    <MenuItem Header="NOR" Click="CreateNorGate" />
+                    <MenuItem Header="XOR" Click="CreateXorGate" />
+                    <MenuItem Header="XNOR" Click="CreateXnorGate" />
+                    <MenuItem Header="NOT" Click="CreateNotGate" />
+                </MenuItem>
+            </Menu>
+        </DockPanel>
     </Grid>
-    
+
     <!--<Grid ClipToBounds="True">
         <Canvas x:Name="CanvasMain" Background="#FF373737" PreviewMouseMove="CanvasOnMouseMove" PreviewMouseUp="CanvasOnMouseUp" MouseRightButtonDown="CanvasRightClick" Margin="0,0,-652,-903">
             <Ellipse Height="100" Canvas.Left="529" Stroke="#FFCE3B3B" Canvas.Top="301" Width="100" StrokeThickness="6" Fill="#FF82CA3C"/>
