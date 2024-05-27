@@ -27,6 +27,7 @@ namespace LogicGate
 
             MakeElementClickableOrDraggable(gateShape);
             AddElement(gateShape);
+            UpdateVisualFromOutput();
         }
 
         public override bool OutputEquation()

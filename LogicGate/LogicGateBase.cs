@@ -30,7 +30,7 @@ namespace LogicGate
 
         public abstract bool OutputEquation();
 
-        public virtual void UpdateVisualFromOutput(bool _output, Connector? _prevSource, Connector? _origin)
+        public virtual void UpdateVisualFromOutput(bool _output = false, Connector? _prevSource = null, Connector? _origin = null)
         {
             OutputResult = OutputEquation();
             OnOutputChange.Invoke(OutputResult, null, Output);
