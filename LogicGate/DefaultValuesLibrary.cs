@@ -61,8 +61,8 @@ namespace LogicGate
         static public Geometry GateORData => Geometry.Parse("M 0 0 L 10 0 Q 37.5 0 50 25 Q 37.5 50 6 50 L 0 50 Q 12 25 0 0 Z");
         static public Geometry GateNORData => Geometry.Parse("M 0 0 L 10 0 Q 37.5 0 50 25 Q 37.5 50 6 50 L 0 50 Q 12 25 0 0 Z M 50 25 A 5 5 0 1 1 50 25.01");
         static public Geometry GateXORData => Geometry.Parse("M 0 0 L 10 0 Q 37.5 0 50 25 Q 37.5 50 6 50 L 0 50 Q 12 25 0 0 Z M -12 0  Q 5 25 -12 50 L -12 50 Q 5 25 -12 0");
-        //Q 10 12.5 -10 25 Z
         static public Geometry GateXNORData => Geometry.Parse("M 0 0 L 10 0 Q 37.5 0 50 25 Q 37.5 50 6 50 L 0 50 Q 12 25 0 0 Z M -12 0  Q 5 25 -12 50 L -12 50 Q 5 25 -12 0 M 50 25 A 5 5 0 1 1 50 25.01");
+        static public Geometry GateNOTData => Geometry.Parse("M 0 0 L 48 25 L 0 50 Z M 50 25 A 5 5 0 1 1 50 25.01");
         #endregion
 
         #region Misc

@@ -11,8 +11,13 @@ namespace LogicGate
     {
         public LogicXNORGate(DesignGrid _grid) : base(_grid)
         {
-            FirstInput.SetOffset(DefaultValuesLibrary.InputDoubleTopConnectorXGateOffset);
-            SecondInput.SetOffset(DefaultValuesLibrary.InputDoubleDownConnectorXGateOffset);
+            InputConnectors = new InputConnector[2]
+            {
+                new InputConnector(_grid, this, DefaultValuesLibrary.InputDoubleTopConnectorXGateOffset),
+                new InputConnector(_grid, this, DefaultValuesLibrary.InputDoubleDownConnectorXGateOffset)
+            };
+            InputConnectors[0].OnInputChanged += UpdateVisualFromOutput;
+            InputConnectors[1].OnInputChanged += UpdateVisualFromOutput;
             Output.SetOffset(DefaultValuesLibrary.OutputConnectorNGateOffset);
             gateShape = new Path
             {
@@ -28,7 +33,7 @@ namespace LogicGate
 
         public override bool OutputEquation()
         {
-            return FirstInput.IsOn == SecondInput.IsOn;
+            return InputConnectors[0].IsOn == InputConnectors[1].IsOn;
         }
     }
 }

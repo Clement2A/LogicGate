@@ -110,7 +110,7 @@ namespace LogicGate
 
         private void CreateNotGate(object sender, RoutedEventArgs e)
         {
-            Debug.WriteLine("Not gate to be implemented");
+            new LogicNOTGate(designGrid);
         }
     }
 }

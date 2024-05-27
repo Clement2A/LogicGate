@@ -12,6 +12,13 @@ namespace LogicGate
     {
         public LogicANDGate(DesignGrid _grid) : base(_grid)
         {
+            InputConnectors = new InputConnector[2] 
+            {
+                new InputConnector(_grid, this, DefaultValuesLibrary.InputDoubleTopConnectorOffset),
+                new InputConnector(_grid, this, DefaultValuesLibrary.InputDoubleDownConnectorOffset)
+            };
+            InputConnectors[0].OnInputChanged += UpdateVisualFromOutput;
+            InputConnectors[1].OnInputChanged += UpdateVisualFromOutput;
             gateShape = new Path
             {
                 Stroke = DefaultValuesLibrary.LogicStrokeColor,
@@ -26,7 +33,7 @@ namespace LogicGate
 
         public override bool OutputEquation()
         {
-            return FirstInput.IsOn && SecondInput.IsOn;
+            return InputConnectors[0].IsOn && InputConnectors[1].IsOn;
         }
     }
 }

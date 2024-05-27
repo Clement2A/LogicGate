@@ -12,8 +12,9 @@ namespace LogicGate
         protected Shape gateShape;
         public event Action<bool, Connector?, Connector?> OnOutputChange = delegate { };
 
-        public InputConnector FirstInput { get; }
-        public InputConnector SecondInput { get; }
+        //public InputConnector FirstInput { get; }
+        //public InputConnector SecondInput { get; }
+        public InputConnector[] InputConnectors { get; protected set; }
         public OutputConnector Output {get;}
 
         public bool OutputResult { get; set; } = false;
@@ -21,10 +22,10 @@ namespace LogicGate
         public LogicGateBase(DesignGrid _grid) : base(_grid)
         {
             Output = new OutputConnector(_grid, this, DefaultValuesLibrary.OutputConnectorOffset);
-            FirstInput = new InputConnector(_grid, this, DefaultValuesLibrary.InputDoubleTopConnectorOffset);
-            SecondInput = new InputConnector(_grid, this, DefaultValuesLibrary.InputDoubleDownConnectorOffset);
-            FirstInput.OnInputChanged += UpdateVisualFromOutput;
-            SecondInput.OnInputChanged += UpdateVisualFromOutput;
+            //FirstInput = new InputConnector(_grid, this, DefaultValuesLibrary.InputDoubleTopConnectorOffset);
+            //SecondInput = new InputConnector(_grid, this, DefaultValuesLibrary.InputDoubleDownConnectorOffset);
+            //FirstInput.OnInputChanged += UpdateVisualFromOutput;
+            //SecondInput.OnInputChanged += UpdateVisualFromOutput;
         }
 
         public abstract bool OutputEquation();
