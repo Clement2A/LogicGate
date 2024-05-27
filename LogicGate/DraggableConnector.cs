@@ -13,6 +13,8 @@ namespace LogicGate
         {
             MakeElementDraggable(moveHandle);
             moveHandle.Cursor = Cursors.SizeAll;
+            connectorShape.MouseRightButtonDown += (s, e) => { DeleteElement(); };
+            moveHandle.MouseRightButtonDown += (s, e) => { DeleteElement(); };
         }
     }
 }

@@ -29,6 +29,8 @@ namespace LogicGate
             MakeElementClickableOrDraggable(outputShape);
             AddElement(outputShape);
 
+            outputShape.MouseRightButtonDown += (s, e) => { DeleteElement(); };
+
             Input = new InputConnector(_grid, this, DefaultValuesLibrary.InputSingleConnectorOffset);
             Input.OnInputChanged += UpdateVisualFromInput;
         }

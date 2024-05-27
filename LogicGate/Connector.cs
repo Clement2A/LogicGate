@@ -15,7 +15,7 @@ namespace LogicGate
 {
     internal class Connector : DesignElement
     {
-        Ellipse connectorShape;
+        protected Ellipse connectorShape;
         protected Ellipse moveHandle;
         List<Connector> connectors = new();
         Connector? inputConnector = null;

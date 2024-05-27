@@ -138,6 +138,20 @@ namespace LogicGate
             secondConnector!.OnElementMove += UpdateSecondPosition;
             firstConnector.OnInputChanged += DisplayFlow;
             secondConnector.OnInputChanged += CheckForSwitch;
+            firstConnector.OnDelete += DeleteElement;
+            secondConnector.OnDelete += DeleteElement;
+        }
+
+        private void UnsetEvents()
+        {
+            firstConnector.OnElementMove -= UpdateFirstPosition;
+            firstConnector.OnInputChanged -= DisplayFlow;
+            firstConnector.OnDelete -= DeleteElement;
+            if (secondConnector == null)
+                return;
+            secondConnector.OnElementMove -= UpdateSecondPosition;
+            secondConnector.OnInputChanged -= CheckForSwitch;
+            secondConnector.OnDelete -= DeleteElement;
         }
 
         void UpdateFirstPosition(Point _pos)
@@ -183,7 +197,8 @@ namespace LogicGate
         {
             base.DeleteElement();
 
-            firstConnector.OnElementMove -= UpdateFirstPosition;
+            UnsetEvents();
+
             if (secondConnector == null)
                 return;
             firstConnector.RemoveConnector(secondConnector);

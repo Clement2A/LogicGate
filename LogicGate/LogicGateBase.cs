@@ -9,7 +9,7 @@ namespace LogicGate
 {
     internal abstract class LogicGateBase : LogicElement, IOutput
     {
-        protected Shape gateShape;
+        Shape gateShape;
         public event Action<bool, Connector?, Connector?> OnOutputChange = delegate { };
 
         //public InputConnector FirstInput { get; }
@@ -26,6 +26,14 @@ namespace LogicGate
             //SecondInput = new InputConnector(_grid, this, DefaultValuesLibrary.InputDoubleDownConnectorOffset);
             //FirstInput.OnInputChanged += UpdateVisualFromOutput;
             //SecondInput.OnInputChanged += UpdateVisualFromOutput;
+        }
+
+        protected void SetShape(Shape _shape)
+        {
+            gateShape = _shape;
+            MakeElementClickableOrDraggable(gateShape);
+            AddElement(gateShape);
+            gateShape.MouseRightButtonDown += (s, e) => { DeleteElement(); };
         }
 
         public abstract bool OutputEquation();

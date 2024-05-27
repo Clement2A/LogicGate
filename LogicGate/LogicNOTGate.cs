@@ -17,16 +17,14 @@ namespace LogicGate
             };
             InputConnectors[0].OnInputChanged += UpdateVisualFromOutput;
             Output.SetOffset(DefaultValuesLibrary.OutputConnectorNGateOffset);
-            gateShape = new Path
-            {
-                Stroke = DefaultValuesLibrary.LogicStrokeColor,
-                Fill = DefaultValuesLibrary.LogicOffColor,
-                StrokeThickness = DefaultValuesLibrary.LogicStrokeThickness,
-                Data = DefaultValuesLibrary.GateNOTData,
-            };
-
-            MakeElementClickableOrDraggable(gateShape);
-            AddElement(gateShape);
+            SetShape(new Path
+                {
+                    Stroke = DefaultValuesLibrary.LogicStrokeColor,
+                    Fill = DefaultValuesLibrary.LogicOffColor,
+                    StrokeThickness = DefaultValuesLibrary.LogicStrokeThickness,
+                    Data = DefaultValuesLibrary.GateNOTData,
+                }
+            );
             UpdateVisualFromOutput();
         }
 

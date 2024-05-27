@@ -16,6 +16,7 @@ namespace LogicGate
             linkedElement = _linkedElement;
             _linkedElement.OnElementMove += UpdatePosition;
             SetOffset(_offset);
+            _linkedElement.OnDelete += DeleteElement;
         }
 
         void UpdatePosition(Thickness _pos)
@@ -28,6 +29,14 @@ namespace LogicGate
             offset = _offset;
             Point _parentPos = linkedElement.GetPosition();
             SetPosition(new Point(_parentPos.X + offset.X, _parentPos.Y + offset.Y));
+        }
+
+        protected override void DeleteElement()
+        {
+            base.DeleteElement();
+            linkedElement.OnElementMove -= UpdatePosition;
+            linkedElement.OnDelete -= DeleteElement;
+
         }
     }
 }

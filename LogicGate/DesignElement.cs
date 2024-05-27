@@ -22,6 +22,7 @@ namespace LogicGate
         public Grid ElementGrid => elementGrid;
 
         public event Action<Thickness> OnElementMove = delegate { };
+        public event Action OnDelete = delegate { };
 
         public DesignElement(DesignGrid _grid)
         {
@@ -129,9 +130,11 @@ namespace LogicGate
 
         protected virtual void DeleteElement()
         {
+            OnDelete?.Invoke();
             elementGrid.Children.Clear();
             Panel _parent = (Panel)VisualTreeHelper.GetParent(elementGrid);
             _parent.Children.Remove(elementGrid);
+            
         }
 
         public void SetPosition(Point _position)
