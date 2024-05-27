@@ -60,7 +60,7 @@ namespace LogicGate
             _anim.RepeatBehavior = RepeatBehavior.Forever;
             flow.BeginAnimation(Shape.StrokeDashOffsetProperty, _anim);
 
-            ConnectorLoopPrevention.StartLoopPrevention(firstConnector);
+            LoopPreventionSystem.StartLoopPrevention(firstConnector);
             AddElement(wire);
             AddElement(flow);
             grid.SelectionOffset = new Point(0, 0);
@@ -74,7 +74,7 @@ namespace LogicGate
         private void UpdateVisual(DesignElement? element)
         {
             Connector? _otherElement = (Connector?)element;
-            if (element == null || _otherElement != null && !_otherElement.InCircuit)
+            if (element == null || _otherElement != null && !_otherElement.IsLocked)
             {
                 wire.Stroke = DefaultValuesLibrary.WireColor;
                 return;
@@ -98,7 +98,7 @@ namespace LogicGate
                 _newConnector.SetPosition(_mousePos);
                 ConnectSecondPosition(_newConnector);
             }
-            else if (_connector == firstConnector || _connector.InCircuit)
+            else if (_connector == firstConnector || _connector.IsLocked)
             {
                 DeleteElement();
                 return;
@@ -107,7 +107,7 @@ namespace LogicGate
                 ConnectSecondPosition(_connector);
 
             secondConnector.ChangeInputState(firstConnector.IsOn,null,firstConnector);
-            ConnectorLoopPrevention.StopLoopPrevention();
+            LoopPreventionSystem.StopLoopPrevention();
             grid.OnElementHovered -= UpdateVisual;
         }
 

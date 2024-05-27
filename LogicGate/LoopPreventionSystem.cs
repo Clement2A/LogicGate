@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LogicGate
 {
-    internal class ConnectorLoopPrevention
+    internal class LoopPreventionSystem
     {
         public static event Action onStop = delegate { };
 
@@ -24,13 +24,19 @@ namespace LogicGate
 
         static void GetLinkedConnectors(Connector _origin)
         {
-            foreach (Connector _linked in _origin.Connectors)
-            {
-                if (_linked.InCircuit)
+            List<Connector> connectors = new List<Connector> { _origin };
+            while (connectors.Count > 0)
+            { 
+                Connector _currentConnector = connectors[connectors.Count-1];
+                connectors.RemoveAt(connectors.Count-1);
+                if (_currentConnector.IsLocked)
                     continue;
-                _linked.InCircuit = true;
-                onStop += _linked.ResetInCircuit;
-                GetLinkedConnectors(_linked);
+                _currentConnector.IsLocked = true;
+                onStop += _currentConnector.ResetInCircuit;
+                foreach (Connector connector in _currentConnector.Connectors) 
+                { 
+                    connectors.Add(connector);
+                }
             }
         }
     }

@@ -18,7 +18,6 @@ namespace LogicGate
         protected Ellipse connectorShape;
         protected Ellipse moveHandle;
         List<Connector> connectors = new();
-        Connector? inputConnector = null;
 
         bool isOn = false;
 
@@ -32,7 +31,7 @@ namespace LogicGate
 
         public List<Connector> Connectors => connectors;
 
-        public bool InCircuit { get; set; } = false;
+        public bool IsLocked { get; set; } = false;
 
         public Connector(DesignGrid _grid) : base(_grid)
         {
@@ -98,7 +97,7 @@ namespace LogicGate
 
         public void ResetInCircuit()
         {
-            InCircuit = false;
+            IsLocked = false;
         }
     }
 }
