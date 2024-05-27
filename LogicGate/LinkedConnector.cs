@@ -10,7 +10,7 @@ namespace LogicGate
     internal class LinkedConnector : Connector
     {
         Point offset;
-        LogicElement linkedElement;
+        protected LogicElement linkedElement;
         public LinkedConnector(DesignGrid _grid, LogicElement _linkedElement, Point _offset) : base(_grid)
         {
             linkedElement = _linkedElement;

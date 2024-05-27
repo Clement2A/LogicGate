@@ -11,10 +11,7 @@ namespace LogicGate
     {
         public LogicNOTGate(DesignGrid _grid) : base(_grid)
         {
-            InputConnectors = new InputConnector[1]
-            {
-                new InputConnector(_grid, this, DefaultValuesLibrary.InputSingleConnectorOffset)
-            };
+            InputConnectors.Add(new InputConnector(_grid, this, DefaultValuesLibrary.InputSingleConnectorOffset));
             InputConnectors[0].OnInputChanged += UpdateVisualFromOutput;
             Output.SetOffset(DefaultValuesLibrary.OutputConnectorNGateOffset);
             SetShape(new Path

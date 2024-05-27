@@ -29,9 +29,9 @@ namespace LogicGate
 
         static int idCount = 0;
 
-        public List<Connector> Connectors => connectors;
+        public virtual List<Connector> Connectors => connectors;
 
-        public bool IsLocked { get; set; } = false;
+        public bool IsLocked { get; protected set; } = false;
 
         public Connector(DesignGrid _grid) : base(_grid)
         {
@@ -98,6 +98,13 @@ namespace LogicGate
         public void ResetInCircuit()
         {
             IsLocked = false;
+            connectorShape.Fill = DefaultValuesLibrary.ConnectorInactiveColor;
+        }
+
+        public void SetLock()
+        {
+            IsLocked = true;
+            connectorShape.Fill = DefaultValuesLibrary.ConnectorBlockedColor;
         }
     }
 }

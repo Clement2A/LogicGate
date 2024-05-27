@@ -132,8 +132,8 @@ namespace LogicGate
         {
             OnDelete?.Invoke();
             elementGrid.Children.Clear();
-            Panel _parent = (Panel)VisualTreeHelper.GetParent(elementGrid);
-            _parent.Children.Remove(elementGrid);
+            Panel? _parent = (Panel)VisualTreeHelper.GetParent(elementGrid);
+            _parent?.Children.Remove(elementGrid);
             
         }
 

@@ -12,20 +12,15 @@ namespace LogicGate
         Shape gateShape;
         public event Action<bool, Connector?, Connector?> OnOutputChange = delegate { };
 
-        //public InputConnector FirstInput { get; }
-        //public InputConnector SecondInput { get; }
-        public InputConnector[] InputConnectors { get; protected set; }
+        public List<Connector> InputConnectors { get; protected set; }
         public OutputConnector Output {get;}
 
         public bool OutputResult { get; set; } = false;
 
         public LogicGateBase(DesignGrid _grid) : base(_grid)
         {
+            InputConnectors = new List<Connector>();
             Output = new OutputConnector(_grid, this, DefaultValuesLibrary.OutputConnectorOffset);
-            //FirstInput = new InputConnector(_grid, this, DefaultValuesLibrary.InputDoubleTopConnectorOffset);
-            //SecondInput = new InputConnector(_grid, this, DefaultValuesLibrary.InputDoubleDownConnectorOffset);
-            //FirstInput.OnInputChanged += UpdateVisualFromOutput;
-            //SecondInput.OnInputChanged += UpdateVisualFromOutput;
         }
 
         protected void SetShape(Shape _shape)

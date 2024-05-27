@@ -11,11 +11,8 @@ namespace LogicGate
     {
         public LogicORGate(DesignGrid _grid) : base(_grid)
         {
-            InputConnectors = new InputConnector[2]
-            {
-                new InputConnector(_grid, this, DefaultValuesLibrary.InputDoubleTopConnectorOffset),
-                new InputConnector(_grid, this, DefaultValuesLibrary.InputDoubleDownConnectorOffset)
-            };
+            InputConnectors.Add(new InputConnector(_grid, this, DefaultValuesLibrary.InputDoubleTopConnectorOffset));
+            InputConnectors.Add(new InputConnector(_grid, this, DefaultValuesLibrary.InputDoubleDownConnectorOffset));
             InputConnectors[0].OnInputChanged += UpdateVisualFromOutput;
             InputConnectors[1].OnInputChanged += UpdateVisualFromOutput;
             SetShape(new Path

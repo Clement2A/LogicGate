@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,6 +16,18 @@ namespace LogicGate
             if (_linkedElementOutput == null)
                 return;
             _linkedElementOutput.OnOutputChange += ChangeInputState;
+        }
+
+        public override List<Connector> Connectors 
+        {
+            get
+            {
+                Debug.WriteLine("Get connectors from output");
+                LogicGateBase? _gate = linkedElement as LogicGateBase;
+                if( _gate == null )
+                    return base.Connectors;
+                return _gate.InputConnectors;
+            }
         }
 
         //public override void SetInput(LogicElement _input, Connector _connector)

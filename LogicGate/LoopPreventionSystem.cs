@@ -31,7 +31,7 @@ namespace LogicGate
                 connectors.RemoveAt(connectors.Count-1);
                 if (_currentConnector.IsLocked)
                     continue;
-                _currentConnector.IsLocked = true;
+                _currentConnector.SetLock();
                 onStop += _currentConnector.ResetInCircuit;
                 foreach (Connector connector in _currentConnector.Connectors) 
                 { 
