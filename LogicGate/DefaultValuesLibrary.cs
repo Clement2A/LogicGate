@@ -50,8 +50,8 @@ namespace LogicGate
         static public Point InputSingleConnectorOffset => new Point(-10, 15);
         static public Point InputDoubleTopConnectorOffset => new Point(-10, 25);
         static public Point InputDoubleDownConnectorOffset => new Point(-10, 5);
-        static public Point InputDoubleTopConnectorXGateOffset => new Point(-20, 25);
-        static public Point InputDoubleDownConnectorXGateOffset => new Point(-20, 5);
+        static public Point InputDoubleTopConnectorXGateOffset => new Point(-25, 25);
+        static public Point InputDoubleDownConnectorXGateOffset => new Point(-25, 5);
         #endregion
 
         #region Gate
@@ -60,8 +60,9 @@ namespace LogicGate
         static public Geometry GateNANDData => Geometry.Parse("M 0 0 L 25 0 A 25 25 0 1 1 25 50 L 0 50 Z M 50 25 A 5 5 0 1 1 50 25.01");
         static public Geometry GateORData => Geometry.Parse("M 0 0 L 10 0 Q 37.5 0 50 25 Q 37.5 50 6 50 L 0 50 Q 12 25 0 0 Z");
         static public Geometry GateNORData => Geometry.Parse("M 0 0 L 10 0 Q 37.5 0 50 25 Q 37.5 50 6 50 L 0 50 Q 12 25 0 0 Z M 50 25 A 5 5 0 1 1 50 25.01");
-        static public Geometry GateXORData => Geometry.Parse("M 0 0 L 10 0 Q 60 0 80 40 Q 60 80 10 80 L 0 80 Q 20 40 0 0 M -10 80  Q 10 40 -10 0  Q 10 40 -10 80 Z");
-        static public Geometry GateXNORData => Geometry.Parse("M 0 0 L 10 0 Q 60 0 80 40 Q 60 80 10 80 L 0 80 Q 20 40 0 0 Z M 80 40 A 5 5 0 1 1 80 40.01 M -10 80  Q 10 40 -10 0  Q 10 40 -10 80 ");
+        static public Geometry GateXORData => Geometry.Parse("M 0 0 L 10 0 Q 37.5 0 50 25 Q 37.5 50 6 50 L 0 50 Q 12 25 0 0 Z M -12 0  Q 5 25 -12 50 L -12 50 Q 5 25 -12 0");
+        //Q 10 12.5 -10 25 Z
+        static public Geometry GateXNORData => Geometry.Parse("M 0 0 L 10 0 Q 37.5 0 50 25 Q 37.5 50 6 50 L 0 50 Q 12 25 0 0 Z M -12 0  Q 5 25 -12 50 L -12 50 Q 5 25 -12 0 M 50 25 A 5 5 0 1 1 50 25.01");
         #endregion
 
         #region Misc
