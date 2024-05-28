@@ -15,10 +15,15 @@ namespace LogicGate
     {
         Connector firstConnector;
         Connector? secondConnector;
+
+        public Connector FirstConnector => firstConnector;
+        public Connector? SecondConnector => secondConnector;
+
         Line wire;
         Line flow;
         bool isOn = false;
         bool isActive = false;
+        public event Action<Wire> OnWireDeleted = delegate { };
 
         public bool IsActive => isActive;
 
@@ -121,8 +126,8 @@ namespace LogicGate
             flow.Y2 = secondConnector.ElementGrid.Margin.Top + DefaultValuesLibrary.ConnectorHandleSize / 2;
 
             SetupEvent();
-            firstConnector.AddConnector(secondConnector);
-            secondConnector.AddConnector(firstConnector);
+            firstConnector.AddConnector(secondConnector, this);
+            secondConnector.AddConnector(firstConnector, this);
             wire.MouseRightButtonDown += (s, e) => { DeleteElement(); };
 
             if(secondConnector.InputElement != null)
@@ -204,7 +209,7 @@ namespace LogicGate
         protected override void DeleteElement()
         {
             base.DeleteElement();
-
+            OnWireDeleted?.Invoke(this);
             UnsetEvents();
 
             if (secondConnector == null)

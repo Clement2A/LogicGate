@@ -78,11 +78,18 @@ namespace LogicGate
             Wire _wire = new Wire(grid, this);
         }
 
-        public void AddConnector(Connector _connector)
+        public void AddConnector(Connector _connector, Wire _wire)
         {
             connectors.Add(_connector);
             _connector.OnInputChanged += ChangeInputState;
             _connector.OnInputElementSet += SetInputElement;
+            _wire.OnWireDeleted += CheckWireConnectors;
+        }
+
+        private void CheckWireConnectors(Wire _wire)
+        {
+            if (_wire.FirstConnector == InputConnector || _wire.SecondConnector! == InputConnector)
+                RemoveInputElement();
         }
 
         public void ChangeInputState(bool _input, Connector? _prevSource, Connector? _origin)

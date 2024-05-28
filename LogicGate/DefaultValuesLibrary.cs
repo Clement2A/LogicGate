@@ -30,10 +30,10 @@ namespace LogicGate
 
         #region Connector
         static public Brush ConnectorHandleColor => new SolidColorBrush(Color.FromArgb(0xff, 0x00, 0x00, 0x00));
-        static public Brush ConnectorInactiveColor => new SolidColorBrush(Color.FromArgb(0xff, 0xff, 0xff, 0xff));
+        static public Brush ConnectorInactiveColor => new SolidColorBrush(Color.FromArgb(0xff, 0xee, 0xaa, 0x11));
         static public Brush ConnectorBlockedColor => new SolidColorBrush(Color.FromArgb(0xff, 0x11, 0x11, 0x11));
         static public Brush ConnectorEoLColor => new SolidColorBrush(Color.FromArgb(0xff, 0xBD, 0x7A, 0x29));
-        static public Brush ConnectorConnectedColor => new SolidColorBrush(Color.FromArgb(0xff, 0xee, 0xaa, 0x11));
+        static public Brush ConnectorConnectedColor => new SolidColorBrush(Color.FromArgb(0xff, 0xff, 0xff, 0xff));
         static public double ConnectorHandleSize => 20;
         static public Thickness ConnectorHandleOffset => new Thickness(0);
         static public double ConnectorShapeSize => 10;
