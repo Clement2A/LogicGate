@@ -12,6 +12,7 @@ namespace LogicGate
     {
         public OutputConnector(DesignGrid _grid, LogicElement _linkedElement, Point _offset) : base(_grid, _linkedElement, _offset)
         {
+            SetInputElement(_linkedElement);
             IOutput? _linkedElementOutput = _linkedElement as IOutput;
             if (_linkedElementOutput == null)
                 return;

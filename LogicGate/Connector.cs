@@ -18,12 +18,15 @@ namespace LogicGate
         protected Ellipse connectorShape;
         protected Ellipse moveHandle;
         List<Connector> connectors = new();
-
+        public LogicElement? InputElement { get; protected set; }
+        public Connector? InputConnector { get; protected set; }
         bool isOn = false;
 
         public bool IsOn => isOn;
 
         public event Action<bool, Connector?, Connector?> OnInputChanged = delegate { };
+        public event Action<LogicElement, Connector> OnInputElementSet = delegate { };
+        public event Action OnInputElementRemoved = delegate { };
 
         public int id = 0;
 
@@ -79,6 +82,7 @@ namespace LogicGate
         {
             connectors.Add(_connector);
             _connector.OnInputChanged += ChangeInputState;
+            _connector.OnInputElementSet += SetInputElement;
         }
 
         public void ChangeInputState(bool _input, Connector? _prevSource, Connector? _origin)
@@ -93,18 +97,57 @@ namespace LogicGate
         {
             connectors.Remove(_connector);
             _connector.OnInputChanged -= ChangeInputState;
+            _connector.OnInputElementSet -= SetInputElement;
         }
 
         public void ResetInCircuit()
         {
             IsLocked = false;
-            connectorShape.Fill = DefaultValuesLibrary.ConnectorInactiveColor;
+            if (InputElement == null)
+                connectorShape.Fill = DefaultValuesLibrary.ConnectorInactiveColor;
+            else
+                connectorShape.Fill = DefaultValuesLibrary.ConnectorConnectedColor;
+
         }
 
         public void SetLock()
         {
             IsLocked = true;
             connectorShape.Fill = DefaultValuesLibrary.ConnectorBlockedColor;
+        }
+
+        public void SetInputElement(LogicElement _inputElement, Connector _connector)
+        {
+            if (InputElement != null)
+                return;
+            InputElement = _inputElement;
+            InputConnector = _connector;
+            InputConnector.OnInputElementRemoved += RemoveInputElement;
+            OnInputElementSet?.Invoke(InputElement, this);
+            connectorShape.Fill = DefaultValuesLibrary.ConnectorConnectedColor;
+        }
+
+        protected void SetInputElement(LogicElement _inputElement)
+        {
+            InputElement = _inputElement;
+            connectorShape.Fill = DefaultValuesLibrary.ConnectorConnectedColor;
+        }
+
+        void RemoveInputElement()
+        {
+            if(InputConnector != null)
+                InputConnector.OnInputElementRemoved -= RemoveInputElement;
+            InputElement = null;
+            InputConnector = null;
+            OnInputElementRemoved?.Invoke();
+            connectorShape.Fill = DefaultValuesLibrary.ConnectorInactiveColor;
+        }
+
+        protected override void DeleteElement()
+        {
+            base.DeleteElement();
+            if (InputElement != null)
+                OnInputElementRemoved?.Invoke();
         }
     }
 }

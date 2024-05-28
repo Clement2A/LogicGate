@@ -74,7 +74,7 @@ namespace LogicGate
         private void UpdateVisual(DesignElement? element)
         {
             Connector? _otherElement = (Connector?)element;
-            if (element == null || _otherElement != null && !_otherElement.IsLocked)
+            if (element == null || _otherElement != null && !_otherElement.IsLocked && (_otherElement.InputElement == null || firstConnector.InputElement == null))
             {
                 wire.Stroke = DefaultValuesLibrary.WireColor;
                 return;
@@ -98,7 +98,7 @@ namespace LogicGate
                 _newConnector.SetPosition(_mousePos);
                 ConnectSecondPosition(_newConnector);
             }
-            else if (_connector.IsLocked)
+            else if (_connector.IsLocked || (_connector.InputElement != null && firstConnector.InputElement != null))
             {
                 DeleteElement();
                 LoopPreventionSystem.StopLoopPrevention();
@@ -107,7 +107,7 @@ namespace LogicGate
             else
                 ConnectSecondPosition(_connector);
 
-            secondConnector.ChangeInputState(firstConnector.IsOn,null,firstConnector);
+            secondConnector!.ChangeInputState(firstConnector.IsOn,null,firstConnector);
             LoopPreventionSystem.StopLoopPrevention();
             grid.OnElementHovered -= UpdateVisual;
         }
@@ -121,13 +121,20 @@ namespace LogicGate
             flow.Y2 = secondConnector.ElementGrid.Margin.Top + DefaultValuesLibrary.ConnectorHandleSize / 2;
 
             SetupEvent();
-            secondConnector.AddConnector(firstConnector);
             firstConnector.AddConnector(secondConnector);
+            secondConnector.AddConnector(firstConnector);
             wire.MouseRightButtonDown += (s, e) => { DeleteElement(); };
 
-            if(secondConnector.IsOn)
+            if(secondConnector.InputElement != null)
             {
                 SwapConnectors();
+            }
+
+            if(firstConnector.InputElement != null)
+                secondConnector.SetInputElement(firstConnector.InputElement, firstConnector);
+
+            if (firstConnector.IsOn)
+            {
                 DisplayFlow(true, null, null);
             }
 
