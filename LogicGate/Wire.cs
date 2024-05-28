@@ -98,9 +98,10 @@ namespace LogicGate
                 _newConnector.SetPosition(_mousePos);
                 ConnectSecondPosition(_newConnector);
             }
-            else if (_connector == firstConnector || _connector.IsLocked)
+            else if (_connector.IsLocked)
             {
                 DeleteElement();
+                LoopPreventionSystem.StopLoopPrevention();
                 return;
             }
             else

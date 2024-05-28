@@ -22,7 +22,6 @@ namespace LogicGate
         {
             get
             {
-                Debug.WriteLine("Get connectors from output");
                 LogicGateBase? _gate = linkedElement as LogicGateBase;
                 if( _gate == null )
                     return base.Connectors;
