@@ -9,6 +9,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Media3D;
 using System.Windows.Shapes;
 
 namespace LogicGate
@@ -22,8 +23,8 @@ namespace LogicGate
 
         DesignElement? hoveredElement = null;
 
-        int padding = 50;
-        int margin = 30;
+        int padding = 10;
+        int margin = 10;
 
         Point selectionOffset = new Point(0, 0);
         public DesignElement? HoveredElement => hoveredElement;
@@ -69,12 +70,12 @@ namespace LogicGate
 
         void InitGrids()
         {
-            innerBorder.Background = Brushes.Gray;
-            outerBorder.Background = Brushes.DarkOliveGreen;
+            innerBorder.Background = DefaultValuesLibrary.GridBackground;
+            outerBorder.Background = DefaultValuesLibrary.GridBorder;
             staticCanvas.Children.Add(outerBorder);
             outerBorder.Child = innerBorder;
             innerBorder.Child = moveGrid;
-            staticCanvas.Background = Brushes.DarkBlue;
+            staticCanvas.SizeChanged += AdaptMoveGridSize;
             innerBorder.Margin = new(padding);
             moveGrid.Margin = new(margin);
             moveGrid.Width = double.NaN;
@@ -83,6 +84,16 @@ namespace LogicGate
             moveGrid.MinHeight = 100;
             moveGrid.HorizontalAlignment = HorizontalAlignment.Left;
             moveGrid.VerticalAlignment = VerticalAlignment.Top;
+        }
+
+        private void AdaptMoveGridSize(object sender, SizeChangedEventArgs e)
+        {
+            Size _newSize = e.NewSize;
+            int _borderSize = (padding + margin)*2;
+            _newSize.Width -= _borderSize;
+            _newSize.Height -= _borderSize;
+            moveGrid.MinWidth = _newSize.Width;
+            moveGrid.MinHeight = _newSize.Height;
         }
 
         void InitEvents()
@@ -151,7 +162,7 @@ namespace LogicGate
         {
             double _leftOffset = 0, _topOffset = 0;
 
-            if (outerBorder.ActualWidth < staticCanvas.ActualWidth)
+            if (outerBorder.ActualWidth <= staticCanvas.ActualWidth)
             {
                 //_leftOffset = (staticCanvas.ActualWidth - outerBorder.ActualWidth) / 2;
                 _leftOffset = 0;
@@ -178,7 +189,7 @@ namespace LogicGate
                 }
             }
 
-            if (outerBorder.ActualHeight < staticCanvas.ActualHeight)
+            if (outerBorder.ActualHeight <= staticCanvas.ActualHeight)
             {
                 //_topOffset = (staticCanvas.ActualHeight - outerBorder.ActualHeight) / 2;
                 _topOffset = 0;
@@ -212,5 +223,6 @@ namespace LogicGate
             hoveredElement = _element;
             OnElementHovered(hoveredElement);
         }
+
     }
 }

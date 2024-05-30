@@ -69,6 +69,9 @@ namespace LogicGate
         #region Misc
         static public Brush OnColor => new SolidColorBrush(Color.FromArgb(0xff, 0x00, 0xff, 0x00));
         static public Brush OffColor => new SolidColorBrush(Color.FromArgb(0xff, 0xff, 0x00, 0x00));
+
+        public static Brush GridBackground => new SolidColorBrush(Color.FromArgb(0x55, 0x55, 0x55, 0x55));
+        public static Brush GridBorder => new SolidColorBrush(Color.FromArgb(0xff, 0x11, 0x11, 0x11));
         #endregion
 
 

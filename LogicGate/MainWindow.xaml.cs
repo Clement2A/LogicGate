@@ -40,7 +40,6 @@ namespace LogicGate
             InitializeComponent();
             mainGrid.Children.Add(designGrid.staticCanvas);
             mainGrid.MouseUp += CanvasOnMouseUp;
-            Debug.WriteLine("MainWindow is " + mainGrid.ActualWidth + " - " + mainGrid.ActualHeight);
 
         }
 
