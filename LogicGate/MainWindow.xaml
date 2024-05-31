@@ -7,129 +7,29 @@
         mc:Ignorable="d"
         Title="Logic Designer" Height="438" Width="799">
 
-    <Grid Margin="0,0,0,0" >
-        <DockPanel VerticalAlignment="Stretch" Height="Auto">
-            <DockPanel>
+    <DockPanel VerticalAlignment="Stretch" Height="Auto">
+        <DockPanel>
             <Menu DockPanel.Dock="Top">
-                    <MenuItem Header="_File">
-                        <MenuItem Header="_New"/>
-                        <MenuItem Header="_Open" />
-                        <MenuItem Header="_Save" />
-                    </MenuItem>
-                    <MenuItem Header="Create Widget">
-                        <MenuItem Header="Input" Click="CreateInput" />
-                        <MenuItem Header="Output" Click="CreateOutput" />
-                        <MenuItem Header="AND" Click="CreateAndGate" />
-                        <MenuItem Header="NAND" Click="CreateNandGate" />
-                        <MenuItem Header="OR" Click="CreateOrGate" />
-                        <MenuItem Header="NOR" Click="CreateNorGate" />
-                        <MenuItem Header="XOR" Click="CreateXorGate" />
-                        <MenuItem Header="XNOR" Click="CreateXnorGate" />
-                        <MenuItem Header="NOT" Click="CreateNotGate" />
-                    </MenuItem>
-                </Menu>
+                <MenuItem Header="_File">
+                    <MenuItem Header="_New"/>
+                    <MenuItem Header="_Open" />
+                    <MenuItem Header="_Save" />
+                </MenuItem>
+                <MenuItem Header="Create Widget">
+                    <MenuItem Header="Input" Click="CreateInput" />
+                    <MenuItem Header="Output" Click="CreateOutput" />
+                    <MenuItem Header="AND" Click="CreateAndGate" />
+                    <MenuItem Header="NAND" Click="CreateNandGate" />
+                    <MenuItem Header="OR" Click="CreateOrGate" />
+                    <MenuItem Header="NOR" Click="CreateNorGate" />
+                    <MenuItem Header="XOR" Click="CreateXorGate" />
+                    <MenuItem Header="XNOR" Click="CreateXnorGate" />
+                    <MenuItem Header="NOT" Click="CreateNotGate" />
+                </MenuItem>
+            </Menu>
             <Grid x:Name="mainGrid" Background="Black">
-
-                <!--<Canvas x:Name="staticGrid" Background="#FF1A2E40">
-                <Grid x:Name="moveGrid" Background="#FF303A44" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <Ellipse Fill="#FF7B3D3D" Margin="371,184,50,50" Height="100" Width="100" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                </Grid>
-            </Canvas>-->
+                
             </Grid>
-            </DockPanel>
         </DockPanel>
-    </Grid>
-
-    <!--<Grid ClipToBounds="True">
-        <Canvas x:Name="CanvasMain" Background="#FF373737" PreviewMouseMove="CanvasOnMouseMove" PreviewMouseUp="CanvasOnMouseUp" MouseRightButtonDown="CanvasRightClick" Margin="0,0,-652,-903">
-            <Ellipse Height="100" Canvas.Left="529" Stroke="#FFCE3B3B" Canvas.Top="301" Width="100" StrokeThickness="6" Fill="#FF82CA3C"/>
-            <Path Stroke="LimeGreen" StrokeThickness="5"
-                      Data="M 10 10 L 100 10 L 150 60"
-                      StrokeDashArray="2,2.5"
-                      StrokeDashCap="Round"
-                      StrokeLineJoin="Round"
-                      StrokeEndLineCap="Round"
-                      StrokeStartLineCap="Round"
-                      StrokeDashOffset="4.5" 
-                      Canvas.Left="369.722" 
-                      Canvas.Top="130.686" 
-                      HorizontalAlignment="Center" 
-                      VerticalAlignment="Center"
-                      Panel.ZIndex="1">
-            </Path>
-            <Path Stroke="#FF0A5088"
-                      Fill="#FF82A9C7"
-                      StrokeThickness="3"
-                      Data="M 0 0 L 40 0 A 40 40 0 1 1 40 80 L 0 80 Z"
-                      Canvas.Left="177.901" Canvas.Top="29.914" HorizontalAlignment="Left" VerticalAlignment="Top">
-            </Path>
-            <Path Stroke="#FF0A5088"
-                      Fill="#FF82A9C7"
-                      StrokeThickness="3"
-                      Data="M 0 0 
-                            L 40 0 
-                            A 40 40 0 1 1 40 80 
-                            L 0 80 
-                            Z 
-                            M 80 40 
-                            A 5 5 0 1 1 80 40.01"
-                      StrokeDashCap="Round"
-                      StrokeLineJoin="Round"
-                      StrokeEndLineCap="Round"
-                      StrokeStartLineCap="Round" 
-                      Canvas.Left="297.086" Canvas.Top="29.914" HorizontalAlignment="Left" VerticalAlignment="Top">
-            </Path>
-            <Path Stroke="#FF0A5088"
-                      Fill="#FF82A9C7"
-                      StrokeThickness="3"
-                      Data="M 0 0 L 10 0 Q 60 0 80 40 Q 60 80 10 80 L 0 80 Q 20 40 0 0"
-                      StrokeDashCap="Round"
-                      StrokeLineJoin="Round"
-                      StrokeEndLineCap="Round"
-                      StrokeStartLineCap="Round" 
-                      Canvas.Left="177.901" Canvas.Top="132.081" HorizontalAlignment="Left" VerticalAlignment="Top">
-            </Path>
-            <Path Stroke="#FF0A5088"
-                      Fill="#FF82A9C7"
-                      StrokeThickness="3"
-                      Data="M 0 0 L 10 0 Q 60 0 80 40 Q 60 80 10 80 L 0 80 Q 20 40 0 0 Z M 80 40 A 5 5 0 1 1 80 40.01"
-                      StrokeDashCap="Round"
-                      StrokeLineJoin="Round"
-                      StrokeEndLineCap="Round"
-                      StrokeStartLineCap="Round" 
-                      Canvas.Left="297.086" Canvas.Top="132.081" HorizontalAlignment="Left" VerticalAlignment="Top">
-            </Path>
-            <Path Stroke="#FF0A5088"
-                      Fill="#FF82A9C7"
-                      StrokeThickness="3"
-                      Data="M 0 0 L 10 0 Q 60 0 80 40 Q 60 80 10 80 L 0 80 Q 20 40 0 0 M -10 80  Q 10 40 -10 0  Q 10 40 -10 80 Z"
-                      StrokeDashCap="Round"
-                      StrokeLineJoin="Round"
-                      StrokeEndLineCap="Round"
-                      StrokeStartLineCap="Round" 
-                      Canvas.Left="177.901" Canvas.Top="229.831" HorizontalAlignment="Left" VerticalAlignment="Top">
-            </Path>
-            <Path Stroke="#FF0A5088"
-                      Fill="#FF82A9C7"
-                      StrokeThickness="3"
-                      Data="M 0 0 L 10 0 Q 60 0 80 40 Q 60 80 10 80 L 0 80 Q 20 40 0 0 Z M 80 40 A 5 5 0 1 1 80 40.01 M -10 80  Q 10 40 -10 0  Q 10 40 -10 80 Z"
-                      StrokeDashCap="Round"
-                      StrokeLineJoin="Round"
-                      StrokeEndLineCap="Round"
-                      StrokeStartLineCap="Round" 
-                      Canvas.Left="297.086" Canvas.Top="229.831" HorizontalAlignment="Left" VerticalAlignment="Top">
-            </Path>
-            <Path Stroke="#FF0A5088"
-                      Fill="#FF82A9C7"
-                      StrokeThickness="3"
-                      Data="M 0 0 L 80 40 L 0 80 Z M 80 40 A 5 5 0 1 1 80 40.01"
-                      StrokeDashCap="Round"
-                      StrokeLineJoin="Round"
-                      StrokeEndLineCap="Round"
-                      StrokeStartLineCap="Round" 
-                      Canvas.Left="232.777" Canvas.Top="328.437" HorizontalAlignment="Left" VerticalAlignment="Top">
-            </Path>
-            <DockPanel Height="2000" LastChildFill="False" Width="2000"/>
-        </Canvas>
-    </Grid>-->
+    </DockPanel>
 </Window>

@@ -73,10 +73,6 @@ namespace LogicGate
         {
             StartDraggableBehaviour( _e.GetPosition(grid.StaticGrid));
         }
-        protected void StartDraggableBehaviour(object _sender, MouseEventArgs _e)
-        {
-            StartDraggableBehaviour( _e.GetPosition(grid.StaticGrid));
-        }
 
         protected void StartDraggableBehaviour(Point _mousePos)
         {
@@ -84,7 +80,6 @@ namespace LogicGate
             grid.SelectionOffset = new Point(elementGrid.Margin.Left - _gridPos.X, elementGrid.Margin.Top - _gridPos.Y);
             grid.OnMouseMove += OnMoveAround;
             grid.OnLeftClickUp += OnUnselect;
-            //Debug.WriteLine("selected");
         }
 
         private void StartClickOrDragBehaviour(object _sender, MouseButtonEventArgs _e)
@@ -115,17 +110,12 @@ namespace LogicGate
             _gridPos.Y += grid.SelectionOffset.Y;
             SetPosition(_gridPos);
             OnElementMove.Invoke(elementGrid.Margin);
-            //Debug.WriteLine("Move element");
-            //Debug.WriteLine("Position is " + _position.X + " - " + _position.Y);
-            //Debug.WriteLine("Offset is " + grid.SelectionOffset.X + " - " + grid.SelectionOffset.Y);
-            //Debug.WriteLine("Grid is " + _gridPos.X + " - " + _gridPos.Y);
         }
 
         protected void OnUnselect(Point _position)
         {
             grid.OnMouseMove -= OnMoveAround;
             grid.OnLeftClickUp -= OnUnselect;
-            //Debug.WriteLine("Unselect");
         }
 
         protected virtual void DeleteElement()

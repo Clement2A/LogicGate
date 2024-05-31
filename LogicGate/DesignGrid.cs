@@ -40,7 +40,6 @@ namespace LogicGate
         public event Action<DesignElement?> OnElementHovered = delegate { };
 
         Thickness mouseOffset = new();
-        public Point MouseOffsetPoint => new Point(mouseOffset.Left, mouseOffset.Top);
 
         public Canvas StaticGrid => staticCanvas;
         public Point SelectionOffset { get => selectionOffset; set => selectionOffset = value; }
@@ -61,11 +60,6 @@ namespace LogicGate
         public void AddElement(DesignElement _element)
         {
             moveGrid.Children.Add(_element.ElementGrid);
-        }
-
-        public void AddElement(UIElement _element)
-        {
-            moveGrid.Children.Add(_element);
         }
 
         void InitGrids()
@@ -112,8 +106,6 @@ namespace LogicGate
         public Point MousePosToGridPos(Point _mousePos)
         {
             Point _gridPos = new(_mousePos.X - outerBorder.Margin.Left - innerBorder.Margin.Left - moveGrid.Margin.Left, _mousePos.Y - outerBorder.Margin.Top - innerBorder.Margin.Top - moveGrid.Margin.Top);
-            //Debug.WriteLine("Mouse is at " + _mousePos.X + " - " + _mousePos.Y);
-            //Debug.WriteLine("Mouse on grid is at " + _gridPos.X + " - " + _gridPos.Y);
             return _gridPos;
         }
 
@@ -154,7 +146,6 @@ namespace LogicGate
         {
             OnMouseMove -= MoveCanvas;
             OnRightClickUp -= StopMovingGrid;
-            //ResetRightDragOrClick();
             mouseOffset = new(0);
         }
 
@@ -164,7 +155,6 @@ namespace LogicGate
 
             if (outerBorder.ActualWidth <= staticCanvas.ActualWidth)
             {
-                //_leftOffset = (staticCanvas.ActualWidth - outerBorder.ActualWidth) / 2;
                 _leftOffset = 0;
 
             }
@@ -191,7 +181,6 @@ namespace LogicGate
 
             if (outerBorder.ActualHeight <= staticCanvas.ActualHeight)
             {
-                //_topOffset = (staticCanvas.ActualHeight - outerBorder.ActualHeight) / 2;
                 _topOffset = 0;
             }
             else

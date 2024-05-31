@@ -30,9 +30,6 @@ namespace LogicGate
         public Action? OnMouseRightClickUp;
         public Point currentObjectOffset = new(0,0);
 
-        Grid sGrid;
-        Grid mGrid;
-
         DesignGrid designGrid = new DesignGrid();
 
         public MainWindow()
@@ -43,28 +40,9 @@ namespace LogicGate
 
         }
 
-        private void CanvasOnMouseMove(object sender, MouseEventArgs e)
-        {
-            //Point _position = e.GetPosition(CanvasMain);
-            //if (_position.X < 0)
-            //    _position.X = 0;
-            //else if (_position.X > CanvasMain.ActualWidth)
-            //    _position.X = CanvasMain.ActualWidth;
-            //if (_position.Y < 0)
-            //    _position.Y = 0;
-            //else if (_position.Y > CanvasMain.ActualHeight)
-            //    _position.Y = CanvasMain.ActualHeight;
-            //OnMouseMoveEvent?.Invoke(_position);
-        }
-
         private void CanvasOnMouseUp(object sender, MouseButtonEventArgs e)
         {
             OnMouseUpEvent?.Invoke();
-        }
-
-        private void CanvasRightClick(object sender, MouseButtonEventArgs e)
-        {
-
         }
 
         private void CreateInput(object sender, RoutedEventArgs e)
