@@ -22,10 +22,7 @@ namespace LogicGate
         Line wire;
         Line flow;
         bool isOn = false;
-        bool isActive = false;
         public event Action<Wire> OnWireDeleted = delegate { };
-
-        public bool IsActive => isActive;
 
         public Wire(DesignGrid _grid, Connector _origin) : base(_grid)
         {

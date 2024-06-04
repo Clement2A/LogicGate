@@ -9,7 +9,7 @@
 
     <DockPanel VerticalAlignment="Stretch" Height="Auto">
         <DockPanel>
-            <Menu DockPanel.Dock="Top">
+            <Menu DockPanel.Dock="Top" Panel.ZIndex="1">
                 <MenuItem Header="_File">
                     <MenuItem Header="_New"/>
                     <MenuItem Header="_Open" />
