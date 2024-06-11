@@ -10,11 +10,6 @@
     <DockPanel VerticalAlignment="Stretch" Height="Auto">
         <DockPanel>
             <Menu DockPanel.Dock="Top" Panel.ZIndex="1">
-                <MenuItem Header="_File">
-                    <MenuItem Header="_New"/>
-                    <MenuItem Header="_Open" />
-                    <MenuItem Header="_Save" />
-                </MenuItem>
                 <MenuItem Header="Create Widget">
                     <MenuItem Header="Input" Click="CreateInput" />
                     <MenuItem Header="Output" Click="CreateOutput" />
